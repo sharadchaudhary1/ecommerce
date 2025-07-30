@@ -1,0 +1,197 @@
+//@ts-nocheck
+// import Header from "@/app/Header/page";
+// import React from "react";
+
+// const Productcard = async ({ params }) => {
+//   const { id } = params;
+
+//   const url = "https://dummyjson.com/products/"+id;
+
+//   const response = await fetch(url);
+//   const data = await response.json();
+//   const product = data;
+//   return (
+//     <>
+//                 <Header/>
+//  <div className="flex justify-center mt-12 px-4">
+//   <div className="w-full max-w-md bg-gradient-to-br from-blue-300 via-blue-100 to-blue-200 shadow-2xl rounded-3xl overflow-hidden transition-transform duration-300 hover:shadow-2xl hover:-translate-y-3 hover:scale-[1.03] border-2 border-blue-200">
+//     <img
+//       src={product.thumbnail}
+//       alt={product.title}
+//       className="w-full  object-contain rounded-t-3xl shadow-sm border-b-2 border-blue-200"
+//     />
+//     <div className="p-6 flex flex-col justify-between h-[250px]">
+//       <h2 className="text-2xl font-extrabold text-blue-900 mb-3 line-clamp-2 tracking-tight leading-snug">
+//         {product.title}
+//       </h2>
+//       <p className="text-base text-gray-700 mb-4 font-medium line-clamp-3">
+//         {product.description}
+//       </p>
+//       <div className="flex items-center justify-between mt-auto">
+//         <span className="text-2xl font-bold text-green-700 bg-green-100 px-4 py-1 rounded-lg shadow-sm">
+//           ₹{product.price}
+//         </span>
+//         <span className="flex items-center gap-1 text-yellow-600 font-semibold text-lg bg-yellow-100 px-3 py-1 rounded-lg shadow-sm">
+//           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.564-.954L10 0l2.948 5.956 6.564.954-4.756 4.635 1.122 6.545z"/></svg>
+//           {product.rating}
+//         </span>
+//       </div>
+//     </div>
+//   </div>
+// </div>
+
+// </>
+
+//   );
+// };
+
+// export default Productcard;
+
+
+
+
+
+
+
+
+import Header from "@/app/Header/page";
+import React from "react";
+
+const Productcard = async ({ params }) => {
+  const { id } = params;
+  
+  const url = "https://dummyjson.com/products/" + id;
+  
+  const response = await fetch(url);
+  const data = await response.json();
+  const product = data;
+  
+  return (
+    <>
+      <Header />
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex justify-center items-center px-4 py-12">
+        <div className="relative w-full max-w-lg">
+          {/* Glowing background effect */}
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 rounded-3xl blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
+          
+          {/* Main card */}
+          <div className="relative bg-white/90 backdrop-blur-sm shadow-2xl rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-3xl hover:-translate-y-2 hover:scale-[1.02] border border-white/20">
+            
+            {/* Image container with overlay effects */}
+            <div className="relative overflow-hidden rounded-t-3xl">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-10"></div>
+              <img
+                src={product.thumbnail}
+                alt={product.title}
+                className="w-full h-64 object-cover transition-transform duration-700 hover:scale-110"
+              />
+              
+              {/* Floating discount badge */}
+              {product.discountPercentage && (
+                <div className="absolute top-4 right-4 z-20">
+                  <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg animate-pulse">
+                    -{Math.round(product.discountPercentage)}%
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {/* Content section */}
+            <div className="p-8 space-y-6">
+              
+              {/* Title with gradient text */}
+              <h1 className="text-3xl font-black bg-gradient-to-r from-slate-800 via-blue-800 to-indigo-800 bg-clip-text text-transparent leading-tight">
+                {product.title}
+              </h1>
+              
+              {/* Category badge */}
+              <div className="inline-flex items-center">
+                <span className="bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold border border-blue-200">
+                  {product.category}
+                </span>
+              </div>
+              
+              {/* Description */}
+              <p className="text-gray-600 leading-relaxed text-base font-medium">
+                {product.description}
+              </p>
+              
+              {/* Rating section */}
+              <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1">
+                  {[...Array(5)].map((_, i) => (
+                    <svg
+                      key={i}
+                      className={`w-5 h-5 ${
+                        i < Math.floor(product.rating)
+                          ? 'text-yellow-400 fill-current'
+                          : 'text-gray-300 fill-current'
+                      }`}
+                      viewBox="0 0 20 20"
+                    >
+                      <path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.564-.954L10 0l2.948 5.956 6.564.954-4.756 4.635 1.122 6.545z" />
+                    </svg>
+                  ))}
+                </div>
+                <span className="text-gray-600 font-medium">
+                  {product.rating} ({product.reviews?.length || 0} reviews)
+                </span>
+              </div>
+              
+              {/* Price section */}
+              <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-3">
+                    <span className="text-4xl font-black bg-gradient-to-r from-green-600 to-emerald-600 bg-clip-text text-transparent">
+                      ₹{product.price}
+                    </span>
+                    {product.discountPercentage && (
+                      <span className="text-lg text-gray-400 line-through font-medium">
+                        ₹{Math.round(product.price / (1 - product.discountPercentage / 100))}
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-500 font-medium">Free shipping available</p>
+                </div>
+                
+                {/* Stock indicator */}
+                <div className="text-right">
+                  <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold ${
+                    product.stock > 10 
+                      ? 'bg-green-100 text-green-700' 
+                      : product.stock > 0 
+                        ? 'bg-yellow-100 text-yellow-700'
+                        : 'bg-red-100 text-red-700'
+                  }`}>
+                    <div className={`w-2 h-2 rounded-full ${
+                      product.stock > 10 
+                        ? 'bg-green-500' 
+                        : product.stock > 0 
+                          ? 'bg-yellow-500'
+                          : 'bg-red-500'
+                    }`}></div>
+                    {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Action buttons */}
+              <div className="flex gap-4 pt-6">
+                <button className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl active:scale-95">
+                  Add to Cart
+                </button>
+                <button className="px-6 py-4 border-2 border-gray-300 hover:border-blue-500 text-gray-700 hover:text-blue-600 font-semibold rounded-2xl transition-all duration-300 hover:bg-blue-50">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default Productcard;

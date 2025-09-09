@@ -4,55 +4,44 @@
 import React, { useContext, useState } from "react";
 import { ShoppingCart, Plus, Minus, Trash2, Heart, ArrowRight, Package } from "lucide-react";
 import { CartContext } from "@/context/CartContext";
-import { NewCartContext } from "../(group)/context";
+import { NewCartContext } from "../context";
+
 
 
 const Cart = () => {
   // const {cart, setCart,totalItems}= useContext(CartContext);
   const { cart, setCart } = useContext(NewCartContext)
-  const [saveLater, setSaveLater] = useState([]);
+  // const [saveLater, setSaveLater] = useState([]);
 
-  const removeProduct = (id) => {
-    const updatedCart = cart.filter((product) => product.id !== id);
-    setCart(updatedCart);
-  };
+//   const decreaseQuantity = (id) => {
+//     const updatedCart = cart
+//       .map((item) =>
+//         item.id === id ? { ...item, quantity: (item.quantity || 1) - 1 } : item
+//       )
+//       .filter((item) => item.quantity > 0);
+//     setCart(updatedCart);
+//   };
 
-  const increaseQuantity = (id) => {
-    const updatedCart = cart.map((item) =>
-      item.id === id ? { ...item, quantity: (item.quantity || 1) + 1 } : item
-    );
-    setCart(updatedCart);
-  };
+//  function handleSaveForLater(id) {
+//     const saveProduct = cart.filter((product) => product.id === id);
+//     setSaveLater([...saveLater, ...saveProduct]);
+//     const updatedCart = cart.filter((product) => product.id !== id);
+//     setCart(updatedCart);
+//   } 
 
-  const decreaseQuantity = (id) => {
-    const updatedCart = cart
-      .map((item) =>
-        item.id === id ? { ...item, quantity: (item.quantity || 1) - 1 } : item
-      )
-      .filter((item) => item.quantity > 0);
-    setCart(updatedCart);
-  };
+//   // const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+//   const totalPrice = Math.round(
+//     cart.reduce((sum, item) => sum + item.price * (item.quantity || 1), 0)
+//   );
 
- function handleSaveForLater(id) {
-    const saveProduct = cart.filter((product) => product.id === id);
-    setSaveLater([...saveLater, ...saveProduct]);
-    const updatedCart = cart.filter((product) => product.id !== id);
-    setCart(updatedCart);
-  } 
-
-  // const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
-  const totalPrice = Math.round(
-    cart.reduce((sum, item) => sum + item.price * (item.quantity || 1), 0)
-  );
-
-  const moveToCart = (item) => {
-    setCart([...cart, { ...item, quantity: 1 }]);
-    setSaveLater(saveLater.filter((prod) => prod.id !== item.id));
-  };
+//   const moveToCart = (item) => {
+//     setCart([...cart, { ...item, quantity: 1 }]);
+//     setSaveLater(saveLater.filter((prod) => prod.id !== item.id));
+//   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      {/* Header */}
+      {/* <Header/> */}
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center gap-3">
@@ -60,9 +49,9 @@ const Cart = () => {
               <ShoppingCart className="w-6 h-6 text-blue-600" />
             </div>
             <h1 className="text-3xl font-bold text-gray-900">Shopping Cart</h1>
-            <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
+            {/* <span className="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-medium">
               {totalItems} items
-            </span>
+            </span> */}
           </div>
         </div>
       </div>
@@ -167,8 +156,8 @@ const Cart = () => {
                 
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between text-gray-600">
-                    <span>Items ({totalItems})</span>
-                    <span>₹{totalPrice.toLocaleString()}</span>
+                    {/* <span>Items ({totalItems})</span> */}
+                    {/* <span>₹{totalPrice.toLocaleString()}</span> */}
                   </div>
                   <div className="flex justify-between text-gray-600">
                     <span>Shipping</span>
@@ -177,7 +166,7 @@ const Cart = () => {
                   <div className="border-t pt-4">
                     <div className="flex justify-between text-lg font-semibold text-gray-900">
                       <span>Total</span>
-                      <span>₹{totalPrice.toLocaleString()}</span>
+                      {/* <span>₹{totalPrice.toLocaleString()}</span> */}
                     </div>
                   </div>
                 </div>
@@ -200,14 +189,14 @@ const Cart = () => {
         )}
 
         {/* Saved for Later */}
-         {saveLater.length > 0 && (
+         {/* {saveLater.length > 0 && (
           <div className="mt-16">
             <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
               <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
                 <Heart className="w-6 h-6 text-red-500" />
                 Saved for Later
-              </h2>
-              
+              </h2> */}
+{/*               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {saveLater.map((item) => (
                   <div
@@ -233,11 +222,11 @@ const Cart = () => {
                       </button>
                     </div>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        )} 
+                ))} */}
+              {/* </div> */}
+            {/* </div> */}
+          {/* </div> */}
+        {/* )}  */}
         
         
       </div>

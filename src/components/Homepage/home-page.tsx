@@ -1,16 +1,23 @@
 // //@ts-nocheck
 // "use client"
 
-// import prismaClient from "@/services/prisma"
+import Itemcard from "../itemcard";
 
-// export default function HomePageProds(initialprods){
-//     const [products,setProducts]=usestate(intialprods)
+// import prismaClient from "@/services/prisma"
+// import { useState } from "react"
+
+// export default function HomePageProds({initialprods}){
+//     const [products,setProducts]=useState(initialprods)
+   
 //     const [rating ,setRating]=useState('1')
 
 //     let filteredProds=products.filter((item)=>{
 //         return item.rating >=rating
 //     })
 //     setProducts(filteredProds)
+
+ 
+//     // let sortedProducts=products.sort((a,b)=> a.price-b.price)
 
 //   function handleDelete(id){
 //      let updatedItems=products.filter((item)=>{
@@ -33,7 +40,14 @@
 
 
 //     </select>
+
 //   </div>
+
+// {
+    // filteredproducts.map((item)=>(
+    //   <Itemcard key={item.id} handleDelete={handleDelete} />
+    // ))
+// }
 //   </div>
 
 //   )
@@ -41,7 +55,7 @@
 // }
 
 
-
+  
 
 // async function HomePage(){
 //     const products=await prismaClient.product.findMany();

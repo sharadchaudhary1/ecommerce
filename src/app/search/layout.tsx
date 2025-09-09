@@ -2,7 +2,7 @@
 "use client"
 
 import { useRouter, useSearchParams } from "next/navigation";
-import Header from "../Header/page";
+// import Header from "../Header/page";
 import { useState } from "react";
 
 
@@ -10,7 +10,7 @@ import { useState } from "react";
 export default function Layout({
   children,
 }) {
-
+ 
     const searchparams=useSearchParams();
      const searchterm=searchparams.get('q')||''
     const minval=searchparams.get('min')||""
@@ -24,7 +24,7 @@ export default function Layout({
     const router  = useRouter()
        
     function handlefilter(){
-        let url="/search?"
+        let url=`/search?`
         if(min){
             url += "&min="+ min;
 
@@ -47,9 +47,9 @@ export default function Layout({
 
   return (
     <html lang="en">
-      <body
+      <body>
       
-      >  <Header/>
+       {/* <Header/> */}
              <div className="flex w-full">
               <aside className="w-full sm:w-[260px] bg-white rounded-2xl shadow-lg border border-gray-200 px-6 h-full py-6 flex flex-col gap-6 ml-3 mt-6 md:mt-0">
         <h3 className="text-xl font-bold text-gray-800 mb-4">Price Filter</h3>

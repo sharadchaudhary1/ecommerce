@@ -6,13 +6,13 @@ import Link from "next/link";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 // import products from "@/constants/data";
 import { useState, useEffect, useContext } from "react";
-import { CartContext } from "@/context/CartContext";
-import AddProdButton from "@/components/addproductbtn";
+// import { CartContext } from "@/context/CartContext";
+// import AddProdButton from "@/components/addproductbtn";
 
 const Header = () => {
   const [userInput, setUserInput] = useState("");
   const [suggestion, setSuggestion] = useState([]);
- const {totalItems}= useContext(CartContext)
+//  const {totalItems}= useContext(CartContext)
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -79,7 +79,7 @@ const Header = () => {
           <span className="font-medium">Login</span>
         </Link>
            
-           <AddProdButton/>
+           {/* <AddProdButton/> */}
 
         {/* Cart */}
         <Link
@@ -87,11 +87,11 @@ const Header = () => {
           className="relative flex items-center text-white hover:text-yellow-300 transition"
         >
           <FaShoppingCart className="text-2xl " />
-          {totalItems > 0 && (
+          {/* {totalItems > 0 && (
             <span className="absolute -top-2 -right-2 bg-yellow-300 text-black text-xs font-bold px-2 py-0.5 rounded-full">
               {totalItems}
             </span>
-          )}
+          )} */}
           {/* <span className="ml-1 font-medium absolute">{totalItems} </span> */}
         </Link>
       </div>
@@ -100,4 +100,3 @@ const Header = () => {
 };
 
 export default Header;
-0

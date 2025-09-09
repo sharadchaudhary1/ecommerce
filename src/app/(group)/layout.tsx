@@ -1,18 +1,18 @@
 //@ts-nocheck
 
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+
 import CartContextProvider from "./context";
 import prismaClient from "@/services/prisma";
+import Header from "../Header/page";
 
 export default function layout({ children }) {
 
-     const cartItems=await prismaClient.product.findMany();
+    //  const cartItems=await prismaClient.product.findMany();
 
   return (
     <div>
-      <CartContextProvider initialcartitems={cartItems}>
+      <CartContextProvider >
+        <Header/>
         {children}
         </CartContextProvider>
     </div>

@@ -3,7 +3,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { CartProvider } from "@/context/CartContext";
+// import { CartProvider } from "@/context/CartContext";
 
 
 
@@ -13,7 +13,9 @@ export default function layout({ children }) {
   return (
     <html>
       <body>
-        <CartProvider>{children}</CartProvider>
+        {/* <CartProvider> */}
+          {children}
+          {/* </CartProvider> */}
       </body>
     </html>
   );

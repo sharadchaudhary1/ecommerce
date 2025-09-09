@@ -1,74 +1,22 @@
+
 //@ts-nocheck
-// import Header from "@/app/Header/page";
-// import React from "react";
-
-// const Productcard = async ({ params }) => {
-//   const { id } = params;
-
-//   const url = "https://dummyjson.com/products/"+id;
-
-//   const response = await fetch(url);
-//   const data = await response.json();
-//   const product = data;
-//   return (
-//     <>
-//                 <Header/>
-//  <div className="flex justify-center mt-12 px-4">
-//   <div className="w-full max-w-md bg-gradient-to-br from-blue-300 via-blue-100 to-blue-200 shadow-2xl rounded-3xl overflow-hidden transition-transform duration-300 hover:shadow-2xl hover:-translate-y-3 hover:scale-[1.03] border-2 border-blue-200">
-//     <img
-//       src={product.thumbnail}
-//       alt={product.title}
-//       className="w-full  object-contain rounded-t-3xl shadow-sm border-b-2 border-blue-200"
-//     />
-//     <div className="p-6 flex flex-col justify-between h-[250px]">
-//       <h2 className="text-2xl font-extrabold text-blue-900 mb-3 line-clamp-2 tracking-tight leading-snug">
-//         {product.title}
-//       </h2>
-//       <p className="text-base text-gray-700 mb-4 font-medium line-clamp-3">
-//         {product.description}
-//       </p>
-//       <div className="flex items-center justify-between mt-auto">
-//         <span className="text-2xl font-bold text-green-700 bg-green-100 px-4 py-1 rounded-lg shadow-sm">
-//           ₹{product.price}
-//         </span>
-//         <span className="flex items-center gap-1 text-yellow-600 font-semibold text-lg bg-yellow-100 px-3 py-1 rounded-lg shadow-sm">
-//           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 fill-current" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.122-6.545L.488 6.91l6.564-.954L10 0l2.948 5.956 6.564.954-4.756 4.635 1.122 6.545z"/></svg>
-//           {product.rating}
-//         </span>
-//       </div>
-//     </div>
-//   </div>
-// </div>
-
-// </>
-
-//   );
-// };
-
-// export default Productcard;
-
-
-
-
-
-
-
-
 import Header from "@/app/Header/page";
+import AddToCart from "@/components/addtocartbtn";
 import React from "react";
 
 const Productcard = async ({ params }) => {
   const { id } = params;
   
-  const url = "https://dummyjson.com/products/" + id;
+  // const url = "https://dummyjson.com/products/" + id;
+  const url=`http://localhost:3000/api/products/${id}`
   
   const response = await fetch(url);
   const data = await response.json();
-  const product = data;
+  const product = data.data;
   
   return (
     <>
-      <Header />
+      {/* <Header /> */}
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex justify-center items-center px-4 py-12">
         <div className="relative w-full max-w-lg">
           {/* Glowing background effect */}
@@ -177,14 +125,12 @@ const Productcard = async ({ params }) => {
               
               {/* Action buttons */}
               <div className="flex gap-4 pt-6">
-                <button className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold py-4 px-8 rounded-2xl transition-all duration-300 transform hover:scale-105 hover:shadow-xl active:scale-95">
-                  Add to Cart
-                </button>
+              <AddToCart product={product}/>
                 <button className="px-6 py-4 border-2 border-gray-300 hover:border-blue-500 text-gray-700 hover:text-blue-600 font-semibold rounded-2xl transition-all duration-300 hover:bg-blue-50">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                   </svg>
-                </button>
+                </button> 
               </div>
             </div>
           </div>

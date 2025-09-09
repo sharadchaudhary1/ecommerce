@@ -6,7 +6,7 @@ import { createContext, useEffect, useState } from "react";
 
 export const NewCartContext = createContext();
 
-export default async function CartContextProvider ({children,initialcartitems}){
+export default  function CartContextProvider ({children}){
 
     const [cart,setCart] = useState([])
     

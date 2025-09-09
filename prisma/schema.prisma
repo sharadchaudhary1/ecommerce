@@ -15,26 +15,37 @@ datasource db {
 }
 
 model Product {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
   title       String
   description String
   price       Float
   thumbnail   String?
   category    String
+  cart   cart[]
+  cartItems    cartdata[]
 }
 
 model user {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-
-  email    String @unique
+  id       String     @id @default(auto()) @map("_id") @db.ObjectId
+  email    String     @unique
   password String
+  username String?
+  cart     cart[]
+  cartdata cartdata[]
 }
 
 model cart {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String
-  price       Float
-  thumbnail   String?
-  category    String
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String  @db.ObjectId
+  user      user    @relation(fields: [userId], references: [id])
+  productId String  @db.ObjectId
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model cartdata {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String  @db.ObjectId
+  user      user    @relation(fields: [userId], references: [id])
+  productId String  @db.ObjectId
+  product   Product @relation(fields: [productId], references: [id])
 }

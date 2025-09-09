@@ -3,15 +3,28 @@
 import prismaClient from "@/services/prisma"
 
 
-export async function addproductToCart(productdata){
+export async function addproductToCart(product){
+
+  const cartProduct={
+    title:product.title,
+    description:product.description,
+    price:product.price,
+    thumbnail:product.thumbnail,
+    category:product.category,
+
+  }
   try{
-    const product=await prismaClient.cart.create({
-    data:productdata
+    const createdproduct=await prismaClient.cart.create({
+    data:cartProduct
   })
   return {
     success:true,
-    data:product
+    data:createdproduct,
+    
+    
   }
+
+
   }
   catch(err){
     console.log(err.message)

@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client"
 import React, { useState } from 'react'
-import Itemcard from './Itemcard'
+import Itemcard from './itemcard'
 
 const Pagination = ({ products }) => {
 

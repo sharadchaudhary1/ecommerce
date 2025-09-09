@@ -2,31 +2,34 @@
 "use client"
 
 
-import { addproductToCart } from '@/app/(group)/cart/action'
+// import { addproductToCart } from '@/app/(group)/cart/action'
 import { NewCartContext } from '@/app/(group)/context'
 import { CartContext } from '@/context/CartContext'
 import React, { useContext } from 'react'
 
 const AddToCart = ({ product }) => {
-  // const { cart, setCart } = useContext(CartContext)
+//   const { cart, setCart } = useContext(CartContext)
   const { cart, setCart } = useContext(NewCartContext)
 
- async function handlecart() {
-    const res=await addproductToCart(product)
+  async function handlecart() {
 
-    const id = product.id;
-    const existingProduct = cart.find(item => item.id === id);
+      const res=await fetch("/api/cart/",{
+        method:"POST",
+        body:JSON.stringify(product)
+      } )
+      const data=await res.json
+      console.log(data.data)
+      if(data.success){
+        alert("product added successfully in cart")
+      }
+      else{
+        alert("porduct not add in cart due to some error")
+      }
 
-    if (existingProduct) {
-      const cartUpdate = cart.map(item =>
-        item.id === id
-          ? { ...item, quantity: (parseInt(item.quantity) || 1) + 1 }
-          : item
-      );
-      setCart(cartUpdate);
-    } else {
-      setCart([...cart, { ...product, quantity: 1 }]);
-    }
+   
+
+setCart([...cart, data.data]);
+
   }
 
   return (

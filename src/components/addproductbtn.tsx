@@ -17,6 +17,9 @@ export default function AddProdButton() {
 
     const parsedprice=Number.parseFloat(price)
     const data = {
+
+
+      
       title,
       description,
       price:parsedprice,
@@ -24,16 +27,21 @@ export default function AddProdButton() {
       image_url : imageUrl,
   
     };
+
+    const res=await fetch('http://localhost:3000/api/products',{
+      method:"POST",
+      body:JSON.stringify(data)
+    })
     
-    const res=await addproductToDb(data)
-    if(res.success){
-        alert("data saved successfully")
-    }
-    else{
-        alert("some error occured")
-    }
+  //   const res=await addproductToDb(data)
+  //   if(res.success){
+  //       alert("data saved successfully")
+  //   }
+  //   else{
+  //       alert("some error occured")
+  //   }
    
-  }
+  // }
 
   return (
     <Dialog.Root>
@@ -125,4 +133,4 @@ export default function AddProdButton() {
       </Dialog.Portal>
     </Dialog.Root>
   );
-}
+}}

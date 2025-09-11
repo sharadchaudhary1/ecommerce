@@ -7,12 +7,14 @@ import { FaShoppingCart, FaUser } from "react-icons/fa";
 // import products from "@/constants/data";
 import { useState, useEffect, useContext } from "react";
 import { CartContext } from "../context/CartContext";
+import Logout from "@/components/logout-btn";
 // import AddProdButton from "@/components/addproductbtn";
 
 const Header = () => {
   const [userInput, setUserInput] = useState("");
   const [suggestion, setSuggestion] = useState([]);
  const {totalItems}= useContext(CartContext)
+ const{user}=useContext(CartContext)
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -71,13 +73,16 @@ const Header = () => {
       </div>
 
       <div className="flex items-center gap-6">
-        <Link
+        {
+          user ? <Logout/> :  <Link
           href="/login"
           className="flex items-center gap-1 text-white hover:text-yellow-300 transition"
-        >
+         >
           <FaUser className="text-lg" />
           <span className="font-medium">Login</span>
-        </Link>
+          </Link>
+        } 
+        
            
            {/* <AddProdButton/> */}
 

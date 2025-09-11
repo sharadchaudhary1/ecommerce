@@ -10,6 +10,10 @@ export default async function getCurrentUserFromCookies(){
   const cookie= await cookies()
   const email=cookie.get('user')?.value
 
+
+  if (!email) {
+    return null; 
+  }
   const currentuser=await prismaClient.user.findUnique({
     where:{
         email:email

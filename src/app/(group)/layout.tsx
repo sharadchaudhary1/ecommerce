@@ -1,9 +1,11 @@
 //@ts-nocheck
 
 
-import CartContextProvider from "./context";
+
 import prismaClient from "@/services/prisma";
-import Header from "../Header/page";
+
+import { CartProvider } from "./context/CartContext";
+import Header from "./Header/page";
 
 export default function layout({ children }) {
 
@@ -11,10 +13,10 @@ export default function layout({ children }) {
 
   return (
     <div>
-      <CartContextProvider >
+      <CartProvider >
         <Header/>
         {children}
-        </CartContextProvider>
+        </CartProvider>
     </div>
   );
 }

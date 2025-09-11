@@ -73,7 +73,7 @@ const Itemcard = ({product}) => {
                   </div>
                   
                   <div className="transform transition-transform duration-200 hover:scale-105">
-                    {/* <AddToCart product={product}/> */}
+                    <AddToCart product={product}/>
                     {/* <DeleteItem id={product.id} />
                     <EditProdButton product={product}/> */}
                   </div>

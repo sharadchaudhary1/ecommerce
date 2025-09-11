@@ -1,6 +1,6 @@
 
 //@ts-nocheck
-import Header from "@/app/Header/page";
+import Header from "@/app/(group)/Header/page";
 import AddToCart from "@/components/addtocartbtn";
 import React from "react";
 

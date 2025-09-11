@@ -1,6 +1,6 @@
 //@ts-nocheck
 "use client"
-import { CartContext } from '@/context/CartContext';
+import { CartContext } from '@/app/(group)/context/CartContext';
 import React, { useContext, useState } from 'react'
 
 const handleSaveForLater = (id) => {

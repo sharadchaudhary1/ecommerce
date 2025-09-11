@@ -1,12 +1,13 @@
 //@ts-nocheck
 import Image from "next/image";
-import Header from "./Header/page";
+
 import Itemcard from "@/components/itemcard";
 import AddToCart from "@/components/addtocartbtn";
 import HomePageProds from "@/components/Homepage/home-page";
 import { addproductToDb } from "@/components/action";
 import Pagination from "@/components/pagination";
 import getCurrentUserFromCookies from "@/services/helper";
+import Header from "./Header/page";
 
 export default async function Home() {
   const response = await fetch("http://localhost:3000/api/products")
@@ -21,7 +22,7 @@ export default async function Home() {
 
   return (
    <>
-   <Header/>
+   {/* <Header/> */}
    <div className="flex flex-wrap justify-center gap-5">
       <Pagination products={products}/>
       

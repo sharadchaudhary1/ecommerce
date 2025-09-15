@@ -32,6 +32,28 @@ try{
             }
         }
     })
+
+
+//     const data = await prismaClient.product.findMany({
+//   where: {
+//     AND: [
+//       {
+//         price: {
+//           gte: min,
+//           lte: max,
+//         },
+//       },
+//       {
+//         OR: [
+//           { title: { contains: query, mode: 'insensitive' } },
+//           { category: { contains: query, mode: 'insensitive' } },
+//           { company: { contains: query, mode: 'insensitive' } },
+//         ],
+//       },
+//     ],
+//   },
+// });
+
     return NextResponse.json({
         success:true,
         data:data,

@@ -8,13 +8,18 @@ import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { useState, useEffect, useContext } from "react";
 import { CartContext } from "../context/CartContext";
 import Logout from "@/components/logout-btn";
-// import AddProdButton from "@/components/addproductbtn";
+import AddProdButton from "@/components/addproductbtn";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 const Header = () => {
   const [userInput, setUserInput] = useState("");
   const [suggestion, setSuggestion] = useState([]);
  const {totalItems}= useContext(CartContext)
  const{user}=useContext(CartContext)
+ const router=useRouter()
+
+
 
   useEffect(() => {
     const fetchdata = async () => {
@@ -33,11 +38,22 @@ const Header = () => {
     item.title.toLowerCase().includes(userInput.toLowerCase())
   );
 
+  function handleAddProduct(){
+   if(!user) return 
+   if(user.company.length==0){
+    router.push('add-company-btn')
+   }else{
+    router.push('/register-addproduct')
+   }
+  }
+
   return (
     <header className="bg-blue-500 text-white px-4 py-3 flex items-center justify-between shadow">
       <Link href="/" className="flex items-center gap-2 font-bold text-xl">
         <span className="text-yellow-300">ShopZone</span>
       </Link>
+
+   
       <div>
         <form
           action="/search"
@@ -84,7 +100,14 @@ const Header = () => {
         } 
         
            
-           {/* <AddProdButton/> */}
+         {user && user.usecase === "business" && (
+          <button
+            onClick={handleAddProduct}
+            className="px-3 py-1 bg-yellow-300 cursor-pointer text-black rounded  hover:bg-pink-200"
+          >
+            Add Product
+          </button>
+        )}
 
         {/* Cart */}
         <Link

@@ -9,6 +9,9 @@ import Pagination from "@/components/pagination";
 import getCurrentUserFromCookies from "@/services/helper";
 import Header from "./Header/page";
 import Advertisement from "@/components/advertisement";
+import { auth } from "../../../auth";
+import SelectUseCase from "@/components/select-usecase";
+
 
 export default async function Home() {
   const response = await fetch("http://localhost:3000/api/products")
@@ -18,10 +21,13 @@ export default async function Home() {
   // console.log(products)
   // const res=await addproductToDb(products);
 
+   const session = await auth()
+
+   
+  
   const user=await getCurrentUserFromCookies()
   console.log(user)  
 
-  const advertisementarray=[1,2,3,4]
 
   return (
    <>
@@ -31,6 +37,10 @@ export default async function Home() {
 
 
       <Pagination products={products}/>
+
+      {session && !user?.usecase &&(
+        <SelectUseCase/>
+      ) }
       
       {/* <HomePageProds initialprods={products} /> */}
       

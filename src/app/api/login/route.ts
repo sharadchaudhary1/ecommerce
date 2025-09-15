@@ -1,4 +1,5 @@
 //@ts-nocheck
+import { generateToken } from "@/services/jwt";
 import prismaClient from "@/services/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -19,6 +20,7 @@ export async function POST(req:NextRequest){
         
         }
     })
+      const token =generateToken({email:user?.email})
 
     if(user?.password==password){
         delete user.password
@@ -26,7 +28,7 @@ export async function POST(req:NextRequest){
             success:true,
              user:user,
         })
-        res.cookies.set('user',user?.email)
+        res.cookies.set('user',token)
         return res
     }
     else{

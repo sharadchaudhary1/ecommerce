@@ -3,12 +3,18 @@ import prismaClient from "@/services/prisma";
 import { NextResponse } from "next/server";
 
 export async function GET(req:any){
-         
-    const res=await prismaClient.product.findMany();
-    return NextResponse.json({
-        success:true,
-        data:res,
-    })
+
+         try{
+
+             const res=await prismaClient.product.findMany();
+             return NextResponse.json({
+                 success:true,
+                 data:res,
+             })
+         }
+         catch(err){
+            console.log(err.message)
+         }
 }
 
 

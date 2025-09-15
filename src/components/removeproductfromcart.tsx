@@ -10,16 +10,20 @@ export default function RemoveProduct({ id }) {
 
   async function removeProduct(id) {
     if (user) {
+         const remainingproduct = cart.filter((item) => item.id !== id);
+        setCart(remainingproduct);
+
       const res = await fetch("http://localhost:3000/api/cart/delete", {
         method: "DELETE",
         body: JSON.stringify({ id }),
       });
       const data = await res.json();
-
-      if (data.success) {
-        const remainingproduct = cart.filter((item) => item.id !== id);
-        setCart(remainingproduct);
+      if(data.success){
+        alert("product deleted successfully")
       }
+
+     
+      
     } else {
       const remainingproduct = cart.filter((item) => item.id !== id);
       setCart(remainingproduct);

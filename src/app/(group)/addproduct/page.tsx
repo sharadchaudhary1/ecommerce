@@ -1,64 +1,68 @@
-'use client';
+"use client";
 
-import * as Dialog from '@radix-ui/react-dialog';
-import { useState } from 'react';
-import React from 'react';
-import { addproductToDb } from './action';
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function AddProdButton() {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
-  const [price, setPrice] = useState('');
-  const [category, setCategory] = useState('');
-  const [imageUrl, setImageUrl] = useState('');
- 
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState("");
+  const [category, setCategory] = useState("");
+  const [imageUrl, setImageUrl] = useState("");
+  const router=useRouter()
 
   async function handleSubmit() {
-
-    const parsedprice=Number.parseFloat(price)
+    const parsedPrice = Number.parseFloat(price);
     const data = {
-
-
-      
       title,
       description,
-      price:parsedprice,
+      price: parsedPrice,
       category,
-      image_url : imageUrl,
-  
+      image_url: imageUrl,
     };
 
-    const res=await fetch('http://localhost:3000/api/products',{
-      method:"POST",
-      body:JSON.stringify(data)
-    })
-    
-  //   const res=await addproductToDb(data)
-  //   if(res.success){
-  //       alert("data saved successfully")
-  //   }
-  //   else{
-  //       alert("some error occured")
-  //   }
-   
-  // }
+    await fetch("http://localhost:3000/api/products", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+  }
+
+  function handlecancel() {
+
+     const oldTitle = title;
+  const oldDescription = description;
+  const oldPrice = price;
+  const oldCategory = category;
+  const oldImageUrl = imageUrl;
+
+
+    setTitle("");
+    setDescription("");
+    setPrice("");
+    setCategory("");
+    setImageUrl("");
+
+    if (window.confirm("Are you sure you want to cancel and go back to Home Page?")) {
+    router.push("/");
+  }else{
+     setTitle(oldTitle);
+    setDescription(oldDescription);
+    setPrice(oldPrice);
+    setCategory(oldCategory);
+    setImageUrl(oldImageUrl);
+  }
+
+  }
 
   return (
-    <Dialog.Root>
-      <Dialog.Trigger asChild>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-          Add Product
-        </button>
-      </Dialog.Trigger>
-
-      <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-
-        <Dialog.Content className="fixed top-1/2 left-1/2 max-w-md w-full bg-white p-6 rounded-lg shadow-lg transform -translate-x-1/2 -translate-y-1/2">
-          <Dialog.Title className="text-lg font-bold mb-2">Add Product</Dialog.Title>
-          <Dialog.Description className="text-sm text-gray-600 mb-4">
-            Fill in the product details.
-          </Dialog.Description>
+    <div>
+      <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+        <div className="bg-white w-full max-w-md rounded-lg shadow-lg p-6">
+          <h2 className="text-lg font-bold mb-2">Add Product</h2>
+          <p className="text-sm text-gray-600 mb-4">
+            Fill the product details.
+          </p>
 
           <div className="flex flex-col gap-4">
             <label className="flex flex-col">
@@ -91,7 +95,6 @@ export default function AddProdButton() {
                 placeholder="Enter price"
               />
             </label>
-         
 
             <label className="flex flex-col">
               <span className="text-sm font-medium mb-1">Category</span>
@@ -114,23 +117,23 @@ export default function AddProdButton() {
             </label>
           </div>
 
+          {/* Buttons */}
           <div className="flex justify-end gap-3 mt-6">
-            <Dialog.Close asChild>
-              <button className="px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300">
-                Cancel
-              </button>
-            </Dialog.Close>
-            <Dialog.Close asChild>
-              <button
-                onClick={handleSubmit}
-                className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
-              >
-                Save
-              </button>
-            </Dialog.Close>
+            <button
+              onClick={handlecancel}
+              className="px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleSubmit}
+              className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
+            >
+              Save
+            </button>
           </div>
-        </Dialog.Content>
-      </Dialog.Portal>
-    </Dialog.Root>
+        </div>
+      </div>
+    </div>
   );
-}}
+}

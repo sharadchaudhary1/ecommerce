@@ -13,9 +13,9 @@ export default function layout({ children }) {
   return (
     <html>
       <body>
-        {/* <CartProvider> */}
+      
           {children}
-          {/* </CartProvider> */}
+         
       </body>
     </html>
   );

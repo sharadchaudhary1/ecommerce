@@ -21,10 +21,11 @@ model Product {
   price       Float
   thumbnail   String?
   category    String
-  company     company?    @relation(fields: [companyId], references: [id])
-  companyId   String?     @db.ObjectId
+  company     company?   @relation(fields: [companyId], references: [id])
+  companyId   String?    @db.ObjectId
   cart        cart[]
   cartItems   cartdata[]
+  save        save[]
 }
 
 model user {
@@ -37,15 +38,16 @@ model user {
   cart     cart[]
   cartdata cartdata[]
   company  company[]
+  save     save[]
 }
 
 model company {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  name     String?
-  ownerId  String @db.ObjectId
-  category String?
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  name        String?
+  ownerId     String  @db.ObjectId
+  category    String?
   description String?
-  owner    user   @relation(fields: [ownerId], references: [id])
+  owner       user    @relation(fields: [ownerId], references: [id])
 
   Products Product[]
 }
@@ -66,4 +68,12 @@ model cartdata {
   productId String  @db.ObjectId
   product   Product @relation(fields: [productId], references: [id])
   quantity  Int     @default(1)
+}
+
+model save {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String  @db.ObjectId
+  user      user    @relation(fields: [userId], references: [id])
+  productId String  @db.ObjectId
+  product   Product @relation(fields: [productId], references: [id])
 }

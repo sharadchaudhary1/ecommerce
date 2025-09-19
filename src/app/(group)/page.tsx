@@ -11,6 +11,7 @@ import Header from "./Header/page";
 import Advertisement from "@/components/advertisement";
 import { auth } from "../../../auth";
 import SelectUseCase from "@/components/select-usecase";
+import SelectProductsFromCategory from "@/components/select-by-category";
 
 
 export default async function Home() {
@@ -33,6 +34,8 @@ export default async function Home() {
    <>
    {/* <Header/> */}
    <div className="flex flex-wrap justify-center gap-5">
+
+    < SelectProductsFromCategory/>
        <Advertisement/>
 
 

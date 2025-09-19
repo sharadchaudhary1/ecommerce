@@ -23,6 +23,7 @@ export const CartProvider= ({children})=>{
       },[])
     
       // load cart data based on user if it is logged in so fetch cart from db otherwise fetch cart data from localstorage
+      
      useEffect(() => {
     async function loadCart() {
       if (!user) {

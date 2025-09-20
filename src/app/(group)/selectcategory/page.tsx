@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { ShoppingCart, Heart, Star, Eye } from "lucide-react";
 import Link from "next/link";
 import AddToCart from "@/components/addtocartbtn";
+import SaveLater from "@/components/savelater";
 
 export default function SelectCategory() {
   const searchparams = useSearchParams();
@@ -22,7 +23,9 @@ export default function SelectCategory() {
     async function fetchProducts() {
       setLoading(true);
       try {
-        const res = await fetch(`/api/selectproducts?category=${category}&min=${minprice}&max=${maxprice}`);
+        const res = await fetch(
+          `/api/selectproducts?category=${category}&min=${minprice}&max=${maxprice}`
+        );
         const data = await res.json();
 
         if (data.success) {
@@ -133,14 +136,17 @@ export default function SelectCategory() {
                   <span className="text-gray-500 text-xs ml-2">(4.0)</span>
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <div className="flex flex-col">
-                    <span className="text-2xl font-bold text-gray-900">
-                      ₹{product.price}
-                    </span>
-                  </div>
+                <div className="flex flex-col items-start gap-3">
+       
+                  <span className="text-2xl font-bold text-gray-900">
+                    ₹{product.price}
+                  </span>
 
-                  <AddToCart product={product} />
+                  {/* Save & AddToCart buttons */}
+                  <div className="flex gap-3">
+                    <SaveLater product={product} />
+                    <AddToCart product={product} />
+                  </div>
                 </div>
               </div>
             </div>

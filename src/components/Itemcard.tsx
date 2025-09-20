@@ -5,6 +5,7 @@ import Link from 'next/link';
 import DeleteItem from './delete-item-btn';
 import EditProdButton from './edit-prod-btn';
 import AddToCart from './addtocartbtn';
+import SaveLater from './savelater';
 
 const Itemcard = ({product}) => {
   return (
@@ -65,15 +66,17 @@ const Itemcard = ({product}) => {
                 </div>
 
                 {/* Price and Add to Cart */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-2xl truncate font-bold text-gray-900">
+                <div className="flex flex-col items-center justify-start">
+                  <div className="flex  items-baseline gap-1">
+                    <span className="text-2xl  truncate font-bold text-gray-900">
                       ₹{product.price}
                     </span>
                   </div>
                   
-                  <div className="transform transition-transform duration-200 hover:scale-105">
+                  <div className= " flex mt-3 gap-7 transform transition-transform duration-200 ">
+                     <SaveLater product={product} />
                     <AddToCart product={product}/>
+                  
                     {/* <DeleteItem id={product.id} />
                     <EditProdButton product={product}/> */}
                   </div>

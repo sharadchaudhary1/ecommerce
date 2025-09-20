@@ -6,42 +6,21 @@ import { ShoppingCart, Plus, Minus, Trash2, Heart, ArrowRight, Package } from "l
 import { CartContext } from "@/app/(group)/context/CartContext";
 import { NewCartContext } from "../context";
 import RemoveProduct from "@/components/removeproductfromcart";
+import SaveLater from "@/components/savelater";
+import { SaveContext } from "../context/savecontext";
 
 
 
 const Cart = () => {
   const {cart, setCart,totalItems,user,setUser}= useContext(CartContext);
-  //  console.log(user)
-  console.log(cart)
-
+console.log(cart)
   
 
-  const [saveLater, setSaveLater] = useState([]);
+  const {savelater, setSavelater} = useContext(SaveContext);
+  console.log(savelater)
 
-  //this is handle only frontend state management of quantity
-  // const decreaseQuantity = (id) => {
-  //   if(user){
-       
-  //   }else{
 
-    
-  //   const updatedCart = cart
-  //     .map((item) =>
-  //       item.id === id ? { ...item, quantity: (item.quantity || 1) - 1 } : item
-  //     )
-  //     .filter((item) => item.quantity > 0);
-  //   setCart(updatedCart);
-  //   }
-  // };
-
-  // const increaseQuantity=(id)=>{
-  //   const updatedCart=cart.map((item)=>item.id===id?{...item,quantity:(item.quantity||1)+1}:item).filter((item)=>item.quantity>0)
-
-  //   setCart(updatedCart)
-  // }
-    
-  //it will handle bith frontend and backend update of quantity
-
+// incease the quantity of product
   const increaseQuantity = async (id) => {
   if (user) {
    
@@ -75,6 +54,8 @@ const Cart = () => {
   }
 };
 
+
+//decrease the quantity of product
 const decreaseQuantity = async (id) => {
   if (user) {
   
@@ -105,8 +86,7 @@ const decreaseQuantity = async (id) => {
    
   } else {
     
-    const updatedCart = cart
-      .map((item) =>
+    const updatedCart = cart .map((item) =>
         item.id === id
           ? { ...item, quantity: (item.quantity || 1) - 1 }
           : item
@@ -117,26 +97,117 @@ const decreaseQuantity = async (id) => {
 };
 
 
- function handleSaveForLater(id) {
-    const saveProduct = cart.filter((product) => product.id === id);
-    setSaveLater([...saveLater, ...saveProduct]);
-    const updatedCart = cart.filter((product) => product.id !== id);
+//move product from cart to the savelater 
+async  function handleSaveForLater(item) {
+     
+    if(user){
+      const existingItem=savelater.find((product)=>product.productId===item.id)
+
+      if(existingItem){
+        setCart(cart.filter((product)=>product.productId!==item.id))
+      }
+
+      else{
+         const updatedSaveLater = [...savelater,  ...item ];
+      setSavelater(updatedSaveLater)
+
+      setCart(saveCart.filter((product)=>product.productId!==item.id))
+
+        const res=await fetch('/api/cart/savelater',{
+          method:"POST",
+          body:JSON.stringify({
+            userId:user.id,
+            productId:item.id,
+            id:item.id
+          })
+   
+        })
+
+      }
+    }
+    else{
+           const existingItem=savelater.find((product)=>product.productId===item.id)
+
+      if(existingItem){
+        setCart(cart.filter((product)=>product.productId!==item.id))
+      }
+    else{
+       const updatedSaveLater = [...cart,  ...item];
+      setSavelater(updatedSaveLater)
+
+    
+
+      const updatedCart = cart.filter((product) => product.id !== item.id);
     setCart(updatedCart);
+  
+
+    }
+
+    }
+
   } 
 
-  // const totalItems = cart.reduce((sum, item) => sum + (item.quantity || 1), 0);
+  
   const totalPrice = Math.round(
     cart.reduce((sum, item) => sum + (item.price??item.product.price??0) * (item.quantity || 1), 0)
   );
 
-  const moveToCart = (item) => {
-    setCart([...cart, { ...item, quantity: 1 }]);
-    setSaveLater(saveLater.filter((prod) => prod.id !== item.id));
+
+  //move product from savelater to the cart
+  const moveToCart = async(item) => {
+  
+
+    if(user){
+      const existingItem=cart.find((product)=>product.productId===item.id)
+
+      if(existingItem){
+        setSavelater(savelater.filter((product)=>product.productId!==item.id))
+      }
+
+      else{
+         const updatedCart = [...cart, { ...item, quantity: 1 }];
+      setCart(updatedCart)
+
+      setSavelater(savelater.filter((product)=>product.productId!==item.id))
+
+        const res=await fetch('/api/savelater/movetocart',{
+          method:"POST",
+          body:JSON.stringify({
+            userId:user.id,
+            productId:item.id,
+            quantity:1,
+            id:item.id
+          })
+   
+        })
+
+      }
+    }
+    else{
+           const existingItem=cart.find((product)=>product.productId===item.id)
+
+      if(existingItem){
+        setSavelater(savelater.filter((product)=>product.productId!==item.id))
+      }
+    else{
+       const updatedCart = [...cart, { ...item, quantity: 1 }];
+      setCart(updatedCart)
+
+    
+
+      const updatedSaveLater = savelater.filter((product) => product.id !== item.id);
+    setSavelater(updatedSaveLater);
+  
+
+    }
+
+    }
+
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-      {/* <Header/> */}
+     
       <div className="bg-white shadow-sm border-b">
         <div className="max-w-7xl mx-auto px-4 py-6">
           <div className="flex items-center gap-3">
@@ -169,6 +240,7 @@ const decreaseQuantity = async (id) => {
                   className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-all duration-300 group"
                 >
                   <div className="flex flex-col md:flex-row gap-6">
+                 
                     {/* Product Image */}
                     <div className="relative">
                       <img
@@ -198,7 +270,7 @@ const decreaseQuantity = async (id) => {
                         </div>
                         <div className="text-sm text-gray-500">
                           ₹{(item.price??item.product?.price??0).toLocaleString()} each
-                          {/* ₹{((item.price || 0) * (item.quantity || 1)).toLocaleString()} */}
+                         
 
                         </div>
                       </div>
@@ -225,19 +297,14 @@ const decreaseQuantity = async (id) => {
 
                         <div className="flex gap-2 ml-auto">
                           <button
-                            onClick={() => handleSaveForLater(item.id)}
+                            onClick={() => handleSaveForLater(item)}
                             className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors px-3 py-2 rounded-lg hover:bg-blue-50"
                           >
                             <Heart className="w-4 h-4" />
                             <span className="text-sm">Save</span>
                           </button>
-                          {/* <button
-                            onClick={() => removeProduct(item.id)}
-                            className="flex items-center gap-2 text-gray-600 hover:text-red-600 transition-colors px-3 py-2 rounded-lg hover:bg-red-50"
-                          >
-                            <Trash2 className="w-4 h-4" />
-                            <span className="text-sm">Remove</span>
-                          </button> */}
+
+                       
 
                           <RemoveProduct id={item.id}/>
                         </div>
@@ -271,7 +338,7 @@ const decreaseQuantity = async (id) => {
                 </div>
 
                 <button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
-                  Proceed to Checkout
+                  Buy now
                   <ArrowRight className="w-5 h-5" />
                 </button>
 
@@ -288,45 +355,59 @@ const decreaseQuantity = async (id) => {
         )}
 
         Saved for Later
-         {saveLater.length > 0 && (
-          <div className="mt-16">
-            <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
-                <Heart className="w-6 h-6 text-red-500" />
-                Saved for Later
-              </h2>
-              
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {saveLater.map((item) => (
-                  <div
-                    key={item.id}
-                    className="border border-gray-200 rounded-xl p-4 hover:shadow-md  transition-all duration-300 group"
-                  >
-                    <img
-                      src={item.thumbnail??item.product?.thumbnail}
-                      alt={item.title??item.product?.title}
-                      className="w-30 h-40 object-cover text-center rounded-lg mb-3 group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <h3 className="font-semibold text-gray-900 mb-1 line-clamp-2">
-                      {item.title??item.product?.title}
-                    </h3>
-                    <p className="text-gray-500 text-sm capitalize mb-2">{item.category??item.product?.category}</p>
-                    <div className="flex items-center justify-between">
-                      <span className="font-bold text-blue-600">₹{(item.price??item.product?.price).toLocaleString()}</span>
-                      <button
-                        onClick={() => moveToCart(item)}
-                        className="text-blue-600 hover:text-blue-700 text-sm font-medium hover:underline"
-                      >
-                        Add to Cart
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
+     {savelater.length > 0 && (
+  <div className="mt-16">
+    <div className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100">
+      <h2 className="text-2xl font-semibold text-gray-900 mb-6 flex items-center gap-3">
+        <Heart className="w-6 h-6 text-red-500" />
+        Saved for Later
+      </h2>
+      
+      {/* Flex container */}
+      <div className="flex flex-wrap gap-6 justify-center">
+        {savelater.map((item) => (
+          <div
+            key={item.id}
+            className="w-[280px]  border border-gray-200 rounded-xl p-4 hover:shadow-lg transition-all duration-300 group bg-white flex flex-col"
+          >
+            {/*  product image  */}
+            <div className="relative w-full h-48 flex items-center justify-center bg-gray-50 rounded-lg mb-4">
+              <img
+                src={item.thumbnail ?? item.product?.thumbnail}
+                alt={item.title ?? item.product?.title}
+                className="max-h-full max-w-full object-contain transition-transform duration-500 group-hover:scale-105"
+              />
+            </div>
+
+            {/* title */}
+            <h3 className="font-semibold text-gray-900 mb-1 text-lg line-clamp-2">
+              {item.title ?? item.product?.title}
+            </h3>
+
+            {/* Category */}
+            <p className="text-gray-500 text-sm capitalize mb-3">
+              {item.category ?? item.product?.category}
+            </p>
+
+            {/* Price & CTA at bottom */}
+            <div className="mt-auto flex items-center justify-between">
+              <span className="font-bold text-xl text-blue-600">
+                ₹{(item.price ?? item.product?.price ?? 0).toLocaleString()}
+              </span>
+              <button
+                onClick={() => moveToCart(item)}
+                className="text-red-500 font-bold text-m hover:text-blue-700  bg-pink-100 px-3 py-3 rounded-2xl "
+              >
+                Move to Cart
+              </button>
             </div>
           </div>
-        )}  
-        
+        ))}
+      </div>
+    </div>
+  </div>
+)}
+
         
       </div>
     </div>

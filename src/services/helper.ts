@@ -30,7 +30,7 @@ export default async function getCurrentUserFromCookies(){
       if(googleuser.usecase=="business"){
     const businessuser=await prismaClient.user.findUnique({
       where:{
-        email:email
+        email:session.user?.email
       },
       include:{
         company:true

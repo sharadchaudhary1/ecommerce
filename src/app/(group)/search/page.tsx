@@ -1,6 +1,7 @@
 // @ts-nocheck
 import AddToCart from '@/components/addtocartbtn';
 import DeleteItem from '@/components/delete-item-btn';
+import SaveLater from '@/components/savelater';
 import prismaClient from '@/services/prisma';
 import Link from 'next/link';
 import React from 'react';
@@ -76,6 +77,7 @@ const Search = async ({ searchParams }) => {
             </Link>
 
             <div className="ml-30 mb-3  pt-0">
+              <SaveLater product={product} />
               <AddToCart product={product} />
             </div>
           </div>

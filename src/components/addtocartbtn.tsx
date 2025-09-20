@@ -63,7 +63,7 @@ const AddToCart = ({ product }) => {
 
   return (
     <div>
-      <button onClick={handlecart} className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 flex items-center space-x-2 shadow-lg">
+      <button onClick={handlecart} className="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-2 rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105 flex items-center space-x-1 shadow-lg">
         <ShoppingCart className="w-4 h-4" />
         <span className="text-sm font-semibold">Add</span>
       </button>

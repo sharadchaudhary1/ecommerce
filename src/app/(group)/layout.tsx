@@ -7,6 +7,7 @@ import prismaClient from "@/services/prisma";
 import { CartProvider } from "./context/CartContext";
 import Header from "./Header/page";
 import { SessionProvider } from "next-auth/react"
+import { SaveProvider } from "./context/savecontext";
 export default function layout({ children }) {
 
     //  const cartItems=await prismaClient.product.findMany();
@@ -14,6 +15,7 @@ export default function layout({ children }) {
   return (
     <div>
      
+     <SaveProvider>
       <CartProvider >
            <SessionProvider>
         <Header/>
@@ -21,6 +23,7 @@ export default function layout({ children }) {
           {children}
         </SessionProvider>
         </CartProvider>
+        </SaveProvider>
         
     </div>
   );

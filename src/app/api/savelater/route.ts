@@ -54,26 +54,28 @@ export async function GET(req:NextRequest){
 
 const user=await getCurrentUserFromCookies()
 
-try{
+if (!user) {
+    return NextResponse.json({
+      success: true,
+      products: [],
+    });
+  }
 
-    const savelaterproducts=await prismaClient.save.findMany({
-        where:{
-            userId:user?.id
-        },
-         include: {
-        product: true,
-      },
-    })
- 
+  try {
+    const savelaterproducts = await prismaClient.save.findMany({
+      where: { userId: user.id },
+      include: { product: true },
+    });
+
     return NextResponse.json({
-        success:true,
-        products:savelaterproducts
-    })
-}
-catch(err){
-    console.log(err.message)
+      success: true,
+      products: savelaterproducts,
+    });
+  } catch (err) {
+    console.error("Error fetching saveLater products:", err);
     return NextResponse.json({
-        success:false
-    })
-}
-}
+      success: false,
+      products: [],
+    });
+  }
+} 

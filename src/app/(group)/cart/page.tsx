@@ -99,25 +99,27 @@ const decreaseQuantity = async (id) => {
 
 //move product from cart to the savelater 
 async  function handleSaveForLater(item) {
+
+  console.log(item)
      
     if(user){
-      const existingItem=savelater.find((product)=>product.productId===item.id)
+      const existingItem=savelater.find((product)=>product.productId===item.productId)
 
       if(existingItem){
-        setCart(cart.filter((product)=>product.productId!==item.id))
+        setCart(cart.filter((product)=>product.productId!==item.productId))
       }
 
       else{
-         const updatedSaveLater = [...savelater,  ...item ];
+         const updatedSaveLater = [...savelater,  {...item} ];
       setSavelater(updatedSaveLater)
 
-      setCart(saveCart.filter((product)=>product.productId!==item.id))
+      setCart(cart.filter((product)=>product.productId!==item.productId))
 
         const res=await fetch('/api/cart/savelater',{
           method:"POST",
           body:JSON.stringify({
             userId:user.id,
-            productId:item.id,
+            productId:item.productId,
             id:item.id
           })
    
@@ -126,13 +128,13 @@ async  function handleSaveForLater(item) {
       }
     }
     else{
-           const existingItem=savelater.find((product)=>product.productId===item.id)
+           const existingItem=savelater.find(product =>  product.id === item.id)
 
       if(existingItem){
-        setCart(cart.filter((product)=>product.productId!==item.id))
+        setCart(cart.filter((product)=>product.id!==item.id))
       }
     else{
-       const updatedSaveLater = [...cart,  ...item];
+       const updatedSaveLater = [...savelater, { ...item}];
       setSavelater(updatedSaveLater)
 
     
@@ -158,23 +160,23 @@ async  function handleSaveForLater(item) {
   
 
     if(user){
-      const existingItem=cart.find((product)=>product.productId===item.id)
+      const existingItem=cart.find((product)=>product.productId===item.productId)
 
       if(existingItem){
-        setSavelater(savelater.filter((product)=>product.productId!==item.id))
+        setSavelater(savelater.filter((product)=>product.productId!==item.productId))
       }
 
       else{
          const updatedCart = [...cart, { ...item, quantity: 1 }];
       setCart(updatedCart)
 
-      setSavelater(savelater.filter((product)=>product.productId!==item.id))
+      setSavelater(savelater.filter((product)=>product.productId!==item.productId))
 
         const res=await fetch('/api/savelater/movetocart',{
           method:"POST",
           body:JSON.stringify({
             userId:user.id,
-            productId:item.id,
+            productId:item.productId,
             quantity:1,
             id:item.id
           })
@@ -184,10 +186,10 @@ async  function handleSaveForLater(item) {
       }
     }
     else{
-           const existingItem=cart.find((product)=>product.productId===item.id)
+           const existingItem=cart.find((product)=> product.id===item.id)
 
       if(existingItem){
-        setSavelater(savelater.filter((product)=>product.productId!==item.id))
+        setSavelater(savelater.filter((product)=>product.id!==item.id))
       }
     else{
        const updatedCart = [...cart, { ...item, quantity: 1 }];

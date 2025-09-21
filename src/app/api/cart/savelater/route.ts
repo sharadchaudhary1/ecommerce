@@ -29,7 +29,7 @@ export async function POST(req:NextRequest){
             }
         })
         return NextResponse.json({
-            suceess:true,
+            success:true,
 
         })
     }

@@ -8,16 +8,20 @@ import { NewCartContext } from "../context";
 import RemoveProduct from "@/components/removeproductfromcart";
 import SaveLater from "@/components/savelater";
 import { SaveContext } from "../context/savecontext";
+import { useRouter } from "next/navigation";
 
 
 
 const Cart = () => {
   const {cart, setCart,totalItems,user,setUser}= useContext(CartContext);
-console.log(cart)
-  
+ const {savelater, setSavelater} = useContext(SaveContext);
 
-  const {savelater, setSavelater} = useContext(SaveContext);
-  console.log(savelater)
+ const router=useRouter()
+ 
+function handleBuyNow(){
+   router.push('/address-and-contact')
+}
+
 
 
 // incease the quantity of product
@@ -339,7 +343,7 @@ async  function handleSaveForLater(item) {
                   </div>
                 </div>
 
-                <button className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
+                <button onClick={handleBuyNow} className="w-full bg-gradient-to-r from-blue-600 to-blue-700 text-white py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-blue-800 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2">
                   Buy now
                   <ArrowRight className="w-5 h-5" />
                 </button>

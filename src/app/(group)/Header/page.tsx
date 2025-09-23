@@ -78,7 +78,7 @@ const Header = () => {
 
         </form>
         {userInput && filteredproducts.length > 0 && (
-          <ul className="absolute bg-white text-black mt-1 rounded shadow w-full max-w-lg z-50">
+          <ul className="absolute  bg-white text-black mt-1 rounded shadow w-full max-w-lg z-80">
             {filteredproducts.slice(0, 10).map((item) => (
               <li key={item.id} className="px-4 py-2 hover:bg-gray-200">
                 <Link href={`/product/${item.id}`}>{item.title}</Link>

@@ -1,33 +1,6 @@
 //@ts-nocheck
 "use client";
-// import { useRouter } from "next/navigation"
 
-// export default function SelectProductsFromCategory(){
-//     const router=useRouter()
-
-//     function handleSearchProductWithCategory(e,category){
-
-//         e.preventDefault()
-
-//         router.push(`/selectcategory?category=${category}`)
-//     }
-
-//     return (
-//         <div>
-//             <form onSubmit={(e)=>handleSearchProductWithCategory(e,"smartphones")}>
-//                 <button className="cursor-pointer" type="submit">Smartphones</button>
-//             </form>
-
-//              <form onSubmit={(e)=>handleSearchProductWithCategory(e,"skin-care")}>
-//                 <button className="cursor-pointer" type="submit">Skin care</button>
-//             </form>
-
-//                <form onSubmit={(e)=>handleSearchProductWithCategory(e,"mobile-accessories")}>
-//                 <button className="cursor-pointer" type="submit">mobile-accessories</button>
-//             </form>
-//         </div>
-//     )
-// }
 
 import { useState } from "react";
 import {
@@ -180,12 +153,7 @@ export default function CategoryNavbar() {
                       onMouseEnter={() => setHoveredCategory(category.id)}
                       onMouseLeave={() => setHoveredCategory(null)}
                       className={`  group relative flex flex-col items-center justify-cente px-4 py-3 min-w-[120px] rounded-xl transition-all duration-300 transform  hover:scale-105 hover:-translate-y-1
-                                  ${
-                                      hoveredCategory ===
-                                      category.id
-                                      ? "shadow-lg"
-                                      : "hover:shadow-md"
-                                  }
+                                  ${ hoveredCategory ===  category.id  ? "shadow-lg"  : "hover:shadow-md"}
                                      ${category.hoverColor}
                                       focus:outline-none focus:ring-2 focus:ring-blue-200
                                  `}
@@ -196,64 +164,20 @@ export default function CategoryNavbar() {
                             ></div>
 
                       {/* Icon Container */}
-                      <div
-                        className={`
-                                                relative p-2 rounded-lg ${
-                                                  category.bgColor
-                                                } mb-2
-                                                transition-all duration-300 group-hover:scale-110
-                                                ${
-                                                  hoveredCategory ===
-                                                  category.id
-                                                    ? "shadow-md"
-                                                    : ""
-                                                }
-                                            `}
-                      >
-                        <IconComponent
-                          className={`
-                                                    w-6 h-6 transition-all duration-300
-                                                    ${
-                                                      hoveredCategory ===
-                                                      category.id
-                                                        ? `text-transparent bg-gradient-to-r ${category.gradient} bg-clip-text`
-                                                        : "text-gray-600"
-                                                    }
-                                                `}
-                        />
+                      <div  className={`relative p-2 rounded-lg ${category.bgColor } mb-2 transition-all duration-300 group-hover:scale-110 ${ hoveredCategory ===category.id ? "shadow-md"   : ""  }     `}
+ >
+       <IconComponent  className={`   w-6 h-6 transition-all duration-300 ${  hoveredCategory === category.id ? `text-transparent bg-gradient-to-r ${category.gradient} bg-clip-text` : "text-gray-600" } `} />
                       </div>
 
                       {/* Category Name */}
                       <span
-                        className={`
-                                                text-sm font-semibold transition-all duration-300 text-center leading-tight
-                                                ${
-                                                  hoveredCategory ===
-                                                  category.id
-                                                    ? `text-transparent bg-gradient-to-r ${category.gradient} bg-clip-text`
-                                                    : "text-gray-700 group-hover:text-gray-900"
-                                                }
-                                            `}
-                      >
+                        className={`text-sm font-semibold transition-all duration-300 text-center leading-tight ${ hoveredCategory === category.id ? `text-transparent bg-gradient-to-r ${category.gradient} bg-clip-text`  : "text-gray-700 group-hover:text-gray-900"} `} >
                         {category.name}
                       </span>
 
                       {/* Active Indicator */}
                       <div
-                        className={`
-                                                absolute bottom-0 left-1/2 transform -translate-x-1/2
-                                                w-0 h-1 bg-gradient-to-r ${
-                                                  category.gradient
-                                                } rounded-full
-                                                transition-all duration-300
-                                                ${
-                                                  hoveredCategory ===
-                                                  category.id
-                                                    ? "w-8"
-                                                    : "group-hover:w-4"
-                                                }
-                                            `}
-                      ></div>
+                        className={` absolute bottom-0 left-1/2 transform -translate-x-1/2 w-0 h-1 bg-gradient-to-r ${category.gradient} rounded-full  transition-all duration-300  ${ hoveredCategory === category.id ? "w-8": "group-hover:w-4"  }  `} ></div>
                     </button>
                   );
                 })}
@@ -271,7 +195,7 @@ export default function CategoryNavbar() {
         </div>
       </div>
 
-      {/* Enhanced Mobile View */}
+
       <div className="md:hidden bg-gray-50 px-4 py-2">
         <div className="flex justify-center">
           <span className="text-xs text-gray-500 font-medium">

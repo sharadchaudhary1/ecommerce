@@ -2,6 +2,7 @@
 //@ts-nocheck
 import Header from "@/app/(group)/Header/page";
 import AddToCart from "@/components/addtocartbtn";
+import SaveLater from "@/components/savelater";
 import React from "react";
 
 const Productcard = async ({ params }) => {
@@ -16,16 +17,16 @@ const Productcard = async ({ params }) => {
   
   return (
     <>
-      {/* <Header /> */}
+
       <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 flex justify-center items-center px-4 py-12">
         <div className="relative w-full max-w-lg">
-          {/* Glowing background effect */}
+       
           <div className="absolute -inset-1 bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 rounded-3xl blur opacity-30 group-hover:opacity-50 transition duration-1000"></div>
           
-          {/* Main card */}
+        
           <div className="relative bg-white/90 backdrop-blur-sm shadow-2xl rounded-3xl overflow-hidden transition-all duration-500 hover:shadow-3xl hover:-translate-y-2 hover:scale-[1.02] border border-white/20">
             
-            {/* Image container with overlay effects */}
+      
             <div className="relative overflow-hidden rounded-t-3xl">
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-10"></div>
               <img
@@ -34,7 +35,7 @@ const Productcard = async ({ params }) => {
                 className="w-full h-64 object-cover transition-transform duration-700 hover:scale-110"
               />
               
-              {/* Floating discount badge */}
+           
               {product.discountPercentage && (
                 <div className="absolute top-4 right-4 z-20">
                   <div className="bg-gradient-to-r from-red-500 to-pink-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg animate-pulse">
@@ -44,22 +45,22 @@ const Productcard = async ({ params }) => {
               )}
             </div>
             
-            {/* Content section */}
+        
             <div className="p-8 space-y-6">
               
-              {/* Title with gradient text */}
+            
               <h1 className="text-3xl font-black bg-gradient-to-r from-slate-800 via-blue-800 to-indigo-800 bg-clip-text text-transparent leading-tight">
                 {product.title}
               </h1>
               
-              {/* Category badge */}
+              {/* Category  */}
               <div className="inline-flex items-center">
                 <span className="bg-gradient-to-r from-blue-100 to-indigo-100 text-blue-800 px-4 py-2 rounded-full text-sm font-semibold border border-blue-200">
                   {product.category}
                 </span>
               </div>
               
-              {/* Description */}
+          
               <p className="text-gray-600 leading-relaxed text-base font-medium">
                 {product.description}
               </p>
@@ -126,11 +127,7 @@ const Productcard = async ({ params }) => {
               {/* Action buttons */}
               <div className="flex gap-4 pt-6">
               <AddToCart product={product}/>
-                <button className="px-6 py-4 border-2 border-gray-300 hover:border-blue-500 text-gray-700 hover:text-blue-600 font-semibold rounded-2xl transition-all duration-300 hover:bg-blue-50">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                  </svg>
-                </button> 
+               <SaveLater product={product}/>
               </div>
             </div>
           </div>

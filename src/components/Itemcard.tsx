@@ -66,19 +66,16 @@ const Itemcard = ({product}) => {
                 </div>
 
                 {/* Price and Add to Cart */}
-                <div className="flex flex-col items-center justify-start">
-                  <div className="flex  items-baseline gap-1">
-                    <span className="text-2xl  truncate font-bold text-gray-900">
-                      ₹{product.price}
-                    </span>
-                  </div>
-                  
-                  <div className= " flex mt-3 gap-7 transform transition-transform duration-200 ">
-                     <SaveLater product={product} />
-                    <AddToCart product={product}/>
-                  
-                    {/* <DeleteItem id={product.id} />
-                    <EditProdButton product={product}/> */}
+                <div className="flex flex-col items-start gap-3">
+       
+                  <span className="text-2xl font-bold text-gray-900">
+                    ₹{product.price}
+                  </span>
+
+                  {/* Save & AddToCart buttons */}
+                  <div className="flex gap-3">
+                    <SaveLater product={product} />
+                    <AddToCart product={product} />
                   </div>
                 </div>
               </div>

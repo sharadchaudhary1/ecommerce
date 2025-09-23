@@ -1,36 +1,22 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+=> Dynamic home page featuring product listings, category filtering,advertisement section which can change in every 3 second, and pagination for user-friendly navigation.
 
-## Getting Started
+=> Google and email authentication using OAuth, session management, and JWT integration.
 
-First, run the development server:
+=> Search bar with instant suggestions based on user input.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+=> Role-based access: business users can add products and register companies; personal users can browse and purchase.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+=> Cart functionality includes order summary, "save for later," and buy now options.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+=> Cart data is persisted locally for guests, and synced to the database upon authentication.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+=> savelater data is persisted locally for guests, and synced to the database upon authentication
 
-## Learn More
+=> Product creation form includes validation, confirmation, and secure database integration.
 
-To learn more about Next.js, take a look at the following resources:
+=> Designed using advanced Next.js and React concepts, highlighting authentication, state management, and practical implementation for modern e-commerce needs.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+=> Advanced filtering to refine product searches by category, price, and other attributes.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+=> Dedicated product pages with high-quality images, descriptions, pricing, and clear call-to-actions.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

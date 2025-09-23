@@ -1,8 +1,8 @@
 //@ts-nocheck
 import prismaClient from "@/services/prisma";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(req:any){
+export async function GET(req:NextRequest){
 
          try{
 
@@ -18,14 +18,14 @@ export async function GET(req:any){
 }
 
 
-export async function POST(req){
+export async function POST(req:NextRequest){
     const body=await req.json();
 
     const productToSave={
         title:body.title,
         description:body.description,
         price:body.price,
-        thumbnail:body.thumbnail,
+        thumbnail:body.images,
         category:body.category
     }
 
@@ -37,4 +37,4 @@ export async function POST(req){
         success:true,
         data:product,
     })
-}
+}   

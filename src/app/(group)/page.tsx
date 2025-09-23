@@ -18,6 +18,7 @@ export default async function Home() {
   const response = await fetch("http://localhost:3000/api/products")
 
   const data=await response.json();
+
   const products=data.data ||[];
   // console.log(products)
   // const res=await addproductToDb(products);

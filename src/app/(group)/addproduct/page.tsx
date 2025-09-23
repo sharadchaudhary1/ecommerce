@@ -18,7 +18,7 @@ export default function AddProdButton() {
       description,
       price: parsedPrice,
       category,
-      image_url: imageUrl,
+      images: imageUrl,
     };
 
     await fetch("http://localhost:3000/api/products", {
@@ -66,7 +66,7 @@ export default function AddProdButton() {
 
           <div className="flex flex-col gap-4">
             <label className="flex flex-col">
-              <span className="text-sm font-medium mb-1">Title</span>
+              <span className="text-sm font-medium mb-1">Title<span className="text-red-400">*</span></span>
               <input
                 className="border border-gray-300 rounded px-3 py-2"
                 value={title}
@@ -86,7 +86,7 @@ export default function AddProdButton() {
             </label>
 
             <label className="flex flex-col">
-              <span className="text-sm font-medium mb-1">Price</span>
+              <span className="text-sm font-medium mb-1">Price<span className="text-red-400">*</span></span>
               <input
                 type="number"
                 className="border border-gray-300 rounded px-3 py-2"
@@ -97,7 +97,7 @@ export default function AddProdButton() {
             </label>
 
             <label className="flex flex-col">
-              <span className="text-sm font-medium mb-1">Category</span>
+              <span className="text-sm font-medium mb-1">Category<span className="text-red-400">*</span></span>
               <input
                 className="border border-gray-300 rounded px-3 py-2"
                 value={category}
@@ -107,7 +107,7 @@ export default function AddProdButton() {
             </label>
 
             <label className="flex flex-col">
-              <span className="text-sm font-medium mb-1">Image URL</span>
+              <span className="text-sm font-medium mb-1">Image URL<span className="text-red-400">*</span></span>
               <input
                 className="border border-gray-300 rounded px-3 py-2"
                 value={imageUrl}

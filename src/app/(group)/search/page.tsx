@@ -76,7 +76,7 @@ const Search = async ({ searchParams }) => {
               </div>
             </Link>
 
-            <div className="ml-30 mb-3  pt-0">
+            <div className=" flex gap-5 ml-7 mb-3  pt-0">
               <SaveLater product={product} />
               <AddToCart product={product} />
             </div>

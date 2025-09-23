@@ -96,7 +96,7 @@ export default function SelectCategory() {
                 />
 
                 {/* Overlay Actions */}
-                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
+                <div className="absolute inset-0  bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100">
                   <div className="flex space-x-3">
                     <Link href={`/product/${product.id}`}>
                       <button className="bg-white cursor-pointer p-3 rounded-full shadow-lg hover:bg-gray-100 transition-colors duration-200">

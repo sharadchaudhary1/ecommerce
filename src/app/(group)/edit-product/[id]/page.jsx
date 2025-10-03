@@ -1,78 +1,80 @@
+//@ts-nocheck
 "use client";
 
-import { redirect, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import React from "react";
 
-export default function AddProdButton() {
+export default function EditProdButton() {
+
+  const {id}=useParams()
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [imageUrl, setImageUrl] = useState("");
-  const router=useRouter()
+  const [product,setProduct]=useState("")
+
+
+  useEffect(()=>{
+    async function EditProduct(){
+      
+      const res=await fetch( `/api/edit-product/${id}`)
+      const data=await res.json()
+      if(data.success){
+        setProduct(data.product)
+
+
+       setTitle(data.product.title || "");
+      setDescription(data.product.description || "");
+      setPrice(data.product.price || "");
+      setCategory(data.product.category || "");
+      setImageUrl(data.product.thumbnail || "");
+      }
+
+    }
+
+    EditProduct()
+  },[id])
+
+  
+
+
+
 
   async function handleSubmit() {
     const parsedPrice = Number.parseFloat(price);
-    const data = {
+    const updatedproduct = {
       title,
       description,
       price: parsedPrice,
       category,
-      images: imageUrl,
+      thumbnail: imageUrl,
     };
 
-   const res= await fetch("http://localhost:3000/api/products", {
-      method: "POST",
-      body: JSON.stringify(data),
-    });
-    const saveproduct=await res.json()
-    if(saveproduct.success){
-      alert("product add successfully on sales")
-      redirect('/register-addproduct')
-      
-    }
-  
-  }
+    const res=await fetch(`/api/edit-product/${id}`,{
+      method:"POST",
+      body:JSON.stringify(updatedproduct)
+    })
 
-  function handlecancel() {
-
-     const oldTitle = title;
-  const oldDescription = description;
-  const oldPrice = price;
-  const oldCategory = category;
-  const oldImageUrl = imageUrl;
-
-
-    setTitle("");
-    setDescription("");
-    setPrice("");
-    setCategory("");
-    setImageUrl("");
-
-    if (window.confirm("Are you sure you want to cancel and go back to Home Page?")) {
-    router.push("/");
-  }else{
-     setTitle(oldTitle);
-    setDescription(oldDescription);
-    setPrice(oldPrice);
-    setCategory(oldCategory);
-    setImageUrl(oldImageUrl);
-  }
 
   }
 
   return (
-    <div>
-      <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
-        <div className="bg-white w-full max-w-md rounded-lg shadow-lg p-6">
-          <h2 className="text-lg font-bold mb-2">Add Product</h2>
+    <>
+ 
+        <div className="fixed inset-0 z-50 flex items-center justify-center">
+  
+        <div className="relative bg-white rounded-lg shadow-lg p-6 max-w-md w-full z-10">
+          <h2 className="text-lg font-bold mb-2">Edit Product</h2>
           <p className="text-sm text-gray-600 mb-4">
-            Fill the product details.
+            Edit the product details below.
           </p>
 
           <div className="flex flex-col gap-4">
             <label className="flex flex-col">
-              <span className="text-sm font-medium mb-1">Title<span className="text-red-400">*</span></span>
+              <span className="text-sm font-medium mb-1">Title</span>
               <input
                 className="border border-gray-300 rounded px-3 py-2"
                 value={title}
@@ -92,7 +94,7 @@ export default function AddProdButton() {
             </label>
 
             <label className="flex flex-col">
-              <span className="text-sm font-medium mb-1">Price<span className="text-red-400">*</span></span>
+              <span className="text-sm font-medium mb-1">Price</span>
               <input
                 type="number"
                 className="border border-gray-300 rounded px-3 py-2"
@@ -103,7 +105,7 @@ export default function AddProdButton() {
             </label>
 
             <label className="flex flex-col">
-              <span className="text-sm font-medium mb-1">Category<span className="text-red-400">*</span></span>
+              <span className="text-sm font-medium mb-1">Category</span>
               <input
                 className="border border-gray-300 rounded px-3 py-2"
                 value={category}
@@ -113,7 +115,7 @@ export default function AddProdButton() {
             </label>
 
             <label className="flex flex-col">
-              <span className="text-sm font-medium mb-1">Image URL<span className="text-red-400">*</span></span>
+              <span className="text-sm font-medium mb-1">Image URL</span>
               <input
                 className="border border-gray-300 rounded px-3 py-2"
                 value={imageUrl}
@@ -123,14 +125,8 @@ export default function AddProdButton() {
             </label>
           </div>
 
-          {/* Buttons */}
+        
           <div className="flex justify-end gap-3 mt-6">
-            <button
-              onClick={handlecancel}
-              className="px-4 py-2 rounded bg-gray-200 text-gray-700 hover:bg-gray-300"
-            >
-              Cancel
-            </button>
             <button
               onClick={handleSubmit}
               className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700"
@@ -140,6 +136,6 @@ export default function AddProdButton() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

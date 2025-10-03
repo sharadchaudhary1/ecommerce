@@ -13,7 +13,10 @@ export default function RegisterNewCompanyAndAddProduct() {
     function SaleProduct() {
         router.push('/addproduct');
     }
-
+    
+    function AllSalesProducts(){
+    router.push('/all-sales-product')
+    }
     return (
         <div className="max-w-4xl mx-auto p-6">
           
@@ -24,6 +27,15 @@ export default function RegisterNewCompanyAndAddProduct() {
                 <p className="text-gray-600 text-lg">
                     Choose an action to begin managing your business operations
                 </p>
+
+                  <span 
+                            onClick={AllSalesProducts}
+                            className="group/btn mt-2 inline-flex cursor-pointer items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg transform hover:scale-105 transition-all duration-200"
+                        >
+                            <Plus className="w-4 h-4" />
+                            All Products on sale
+                            <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform duration-200" />
+                        </span>
             </div>
 
             

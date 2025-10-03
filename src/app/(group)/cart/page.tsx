@@ -16,6 +16,8 @@ const Cart = () => {
   const {cart, setCart,totalItems,user,setUser}= useContext(CartContext);
  const {savelater, setSavelater} = useContext(SaveContext);
 
+  
+
  const router=useRouter()
  
 function handleBuyNow(){

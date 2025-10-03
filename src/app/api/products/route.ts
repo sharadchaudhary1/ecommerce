@@ -1,4 +1,5 @@
 //@ts-nocheck
+import getCurrentUserFromCookies from "@/services/helper";
 import prismaClient from "@/services/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -20,6 +21,9 @@ export async function GET(req:NextRequest){
 
 export async function POST(req:NextRequest){
     const body=await req.json();
+    const user=await getCurrentUserFromCookies();
+
+
 
     const productToSave={
         title:body.title,
@@ -29,12 +33,39 @@ export async function POST(req:NextRequest){
         category:body.category
     }
 
-    const product=await prismaClient.product.create({
-        data:productToSave,
-    })
+    try{
 
-    return ({
-        success:true,
-        data:product,
-    })
+          const company = await prismaClient.company.findFirst({
+      where: { ownerId: user?.id },
+    });
+       
+    let product;
+
+        if(company){
+
+        product=await prismaClient.product.create({
+              data:{...productToSave,companyId:company.id},
+          })
+        }
+        else{
+
+           product=await prismaClient.product.create({
+                data:productToSave,
+            })
+        }
+    
+        return NextResponse.json ({
+            success:true,
+            data:product,
+        })
+    }
+    catch(err){
+        console.log(err.message)
+ return NextResponse.json ({
+            success:false,
+            
+        })
+      
+    }
+
 }   

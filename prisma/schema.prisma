@@ -77,3 +77,5 @@ model save {
   productId String  @db.ObjectId
   product   Product @relation(fields: [productId], references: [id])
 }
+
+

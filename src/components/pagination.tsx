@@ -1,7 +1,8 @@
 // @ts-nocheck
 "use client"
 import React, { useState } from 'react'
-import Itemcard from './itemcard'
+import Itemcard from './productcard'
+
 
 
 

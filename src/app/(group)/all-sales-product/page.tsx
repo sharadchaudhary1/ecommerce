@@ -18,7 +18,7 @@ export default  function AllProductsOnSales() {
     async function ProductsIncompany(){
 
       
-  const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/allsalesproduct`)
+  const res = await fetch(`/api/allsalesproduct`)
   const data = await res.json()
   setProducts(data.products)  
 

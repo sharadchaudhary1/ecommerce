@@ -15,7 +15,7 @@ const Login = () => {
    async function handlelogin(e){
      e.preventDefault()
 
-     const res=await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/login`,{
+     const res=await fetch(`/api/login`,{
       method:"POST",
       body:JSON.stringify({
         usercred,

@@ -9,7 +9,7 @@ const Productcard = async ({ params }) => {
   const { id } = params;
   
   // const url = "https://dummyjson.com/products/" + id;
-  const url=`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/${id}`
+  const url=`/api/products/${id}`
   
   const response = await fetch(url);
   const data = await response.json();

@@ -15,7 +15,7 @@ import SelectProductsFromCategory from "@/components/select-by-category";
 
 
 export default async function Home() {
-  const response = await fetch(`/api/products`)
+  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products`)
 
   const data=await response.json();
 

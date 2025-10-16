@@ -11,7 +11,7 @@ const Itemcard = ({product}) => {
   return (
     <div className="p-3 w-full sm:w-[420px]">
       <div className="group relative bg-white rounded-2xl shadow-lg border border-gray-100 hover:shadow-2xl hover:border-gray-200 transition-all duration-300 overflow-hidden">
-        {/* Gradient overlay for subtle depth */}
+       
         <div className="absolute inset-0 bg-gradient-to-br from-white via-transparent to-gray-50 opacity-60 pointer-events-none"></div>
         
         <div className="relative p-6">

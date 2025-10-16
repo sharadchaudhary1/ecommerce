@@ -3,6 +3,8 @@
 import React, { useState } from 'react'
 import Itemcard from './itemcard'
 
+
+
 const Pagination = ({ products }) => {
 
   const pagesize = 15

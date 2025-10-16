@@ -3,7 +3,8 @@
 
 
 
-import SignIn from '@/components/sign-in-with-google'
+import SignInWithGoogle from '@/components/sign-in-with-google'
+
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -95,7 +96,7 @@ const Signup = () => {
             Sign Up
           </button>
         </form>
-        <SignIn/>
+        <SignInWithGoogle/>
         <p className="mt-6 text-center text-red-500">
           Already have an account?{' '}
           <Link href="/login" className="underline font-semibold hover:text-violet-800 transition">

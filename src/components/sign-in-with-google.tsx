@@ -5,7 +5,7 @@
 import { signIn } from "next-auth/react"
 
  
-export default function SignIn() {
+export default function SignInWithGoogle() {
   return (
     <button 
             className="flex items-center justify-center gap-3 mt-5 bg-white border border-gray-300 rounded-lg shadow-sm px-6 py-2 w-full hover:bg-gray-100 transition"

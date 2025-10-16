@@ -23,8 +23,7 @@ export default function SelectCategory() {
     async function fetchProducts() {
       setLoading(true);
       try {
-        const res = await fetch(
-          `/api/selectproducts?category=${category}&min=${minprice}&max=${maxprice}`
+        const res = await fetch(`/api/selectproducts?category=${category}&min=${minprice}&max=${maxprice}`
         );
         const data = await res.json();
 

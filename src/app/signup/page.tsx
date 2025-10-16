@@ -32,7 +32,7 @@ const Signup = () => {
       usecase:use,
       provider:"credentials"
     }
-   const res=await fetch("http://localhost:3000/api/signup",{
+   const res=await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/signup`,{
     method:"POST",
     body:JSON.stringify(data)
    })

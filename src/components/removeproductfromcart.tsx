@@ -13,7 +13,7 @@ export default function RemoveProduct({ id }) {
          const remainingproduct = cart.filter((item) => item.id !== id);
         setCart(remainingproduct);
 
-      const res = await fetch("http://localhost:3000/api/cart/delete", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cart/delete`, {
         method: "DELETE",
         body: JSON.stringify({ id }),
       });

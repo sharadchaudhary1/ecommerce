@@ -14,7 +14,7 @@ export async function POST(req:NextRequest){
         where:{
           OR:[
          
-            {  email:usercred},
+            { email:usercred},
             {username:usercred}
           ]
         

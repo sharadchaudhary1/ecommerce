@@ -21,7 +21,15 @@ const Cart = () => {
  const router=useRouter()
  
 function handleBuyNow(){
-   router.push('/address-and-contact')
+    
+  if(!user){
+    alert("currenly you are not login first login")
+    router.push('/login')
+  }
+   else{
+
+     router.push('/address-and-contact')
+   }
 }
 
 
@@ -134,7 +142,7 @@ async  function handleSaveForLater(item) {
       }
     }
     else{
-           const existingItem=savelater.find(product =>  product.id === item.id)
+           const existingItem=savelater.find((product) =>  product.id === item.id)
 
       if(existingItem){
         setCart(cart.filter((product)=>product.id!==item.id))

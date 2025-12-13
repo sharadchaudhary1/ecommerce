@@ -1,6 +1,7 @@
 //@ts-nocheck
 "use client"
 
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function adressAndContactDetails() {
@@ -14,9 +15,12 @@ export default function adressAndContactDetails() {
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
 
+  const router=useRouter()
+
   function handleSubmit(e) {
     e.preventDefault();
    
+    router.push('/payment-page')
     
    
     }
@@ -81,7 +85,7 @@ export default function adressAndContactDetails() {
       </div>
 
       <button type="submit" className="w-full py-2 px-4 bg-blue-600 text-white rounded hover:bg-blue-700 font-semibold">
-        Continue to Payment
+        Continue to Payment 
       </button>
     </form>
   );

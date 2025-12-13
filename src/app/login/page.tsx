@@ -1,5 +1,6 @@
 //@ts-nocheck
 "use client"
+import SignInWithGoogle from "@/components/sign-in-with-google";
 import { signIn } from "next-auth/react";
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -30,7 +31,7 @@ const Login = () => {
       router.push("/")
 
      }else{
-      alert("user is not authenticated")
+      // alert("user is not authenticated")
      }
 
 
@@ -39,7 +40,7 @@ const Login = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
 
-      <form onSubmit={handlelogin} className="bg-pink-100 shadow-lg rounded-lg p-8  max-w-sm space-y-6">
+      <form onSubmit={handlelogin} className="bg-pink-100 shadow-lg rounded-lg p-8  max-w-sm space-y-4">
         <h2 className="text-2xl font-bold text-center text-gray-800">Login</h2>
         <input 
           type="text"
@@ -66,21 +67,18 @@ const Login = () => {
           Login
         </button>
 
+         <SignInWithGoogle/>
+
          <p className="text-center text-sm text-gray-600">
           Don&apos;t have an account?{' '}
           <Link href="/signup" className="text-blue-600 hover:underline">
             Signup
           </Link>
         </p>
-
-      </form>
-
-
       
-
-
-       
-       
+      </form>
+     
+ 
     </div>
   )
 }

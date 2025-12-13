@@ -21,7 +21,7 @@ const Signup = () => {
     e.preventDefault()
 
     if (password !== confirmpassword) {
-    alert("Passwords do not match ❌");
+    alert("Passwords do not match ");
     return; 
   }
 
@@ -49,8 +49,8 @@ const Signup = () => {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-br from-pink-200 to-red-200">
-      <div className="w-full max-w-md rounded-2xl bg-pink-200 shadow-2xl p-8">
+    <div className="flex justify-center items-center min-h-screen ">
+      <div className="w-full max-w-md rounded-2xl bg-pink-100 shadow-2xl p-8">
         <h2 className="text-3xl font-bold text-red-400 mb-8 text-center">Sign Up</h2>
         <form onSubmit={handlesignup} className="flex flex-col gap-5">
           <input
@@ -84,8 +84,8 @@ const Signup = () => {
           {
            password!=confirmpassword ?<p className='text-red-300 px-2 py-2 '>password mismatch</p>:null
           }
-         <h2>Please select why you should use  </h2>
-          <select  className='border-2 rounded py-2 px-4' value={use} onChange={e=>setUse(e.target.value)}>
+         <h2 className='text-xl text-violet-500 font-semibold'>Please select why you should use  </h2>
+          <select  className=' bg-white rounded py-2 px-4 text-violet-500' value={use} onChange={e=>setUse(e.target.value)}>
             <option value={"personal "} >personal </option>
             <option value="business">business</option>
           </select>

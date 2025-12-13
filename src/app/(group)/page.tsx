@@ -28,7 +28,7 @@ export default async function Home() {
    
   
   const user=await getCurrentUserFromCookies()
-  console.log(user)  
+  // console.log(user)  
 
 
   return (

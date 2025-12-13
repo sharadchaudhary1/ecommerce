@@ -69,13 +69,13 @@ export default function SelectCategory() {
       <div className="max-w-7xl mx-auto">
         {/* Header Section */}
         <div className="mb-12 text-center">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+          {/* <h1 className="text-4xl font-bold text-gray-900 mb-4">
             {category
               ? category.charAt(0).toUpperCase() + category.slice(1)
               : "All Products"}
-          </h1>
+          </h1> */}
           <p className="text-gray-600 text-lg">
-            Discover amazing products in our {category} collection
+            Discover amazing products in selected category collection
           </p>
           <div className="w-24 h-1 bg-gradient-to-r from-blue-500 to-purple-600 mx-auto mt-4 rounded-full"></div>
         </div>

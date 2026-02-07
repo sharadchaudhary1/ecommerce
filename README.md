@@ -1,526 +1,336 @@
+# E-Commerce Platform - Complete Documentation
 
+## Project Overview
 
-Table of Contents
-
-Project Overview
-Technology Stack
-Architecture
-Features
-Database Schema
-API Endpoints
-Authentication & Authorization
-State Management
-Component Structure
-Setup & Installation
-Environment Variables
-Deployment
-
-
-Project Overview
-This is a full-stack e-commerce platform built with Next.js 15, featuring both personal shopping and business product listing capabilities. The platform supports dual user types:
-
-Personal Users: Browse, search, and purchase products
-Business Users: Register companies and list products for sale
-
-Key Highlights
-
-Server-side rendering with Next.js App Router
-Real-time cart synchronization
-Google OAuth & credential-based authentication
-MongoDB database with Prisma ORM
-Persistent cart and save-for-later functionality
-Advanced product filtering and search
-Responsive UI with Tailwind CSS
-
-
-Technology Stack
-Frontend
-
-Framework: Next.js 15.4.1 (React 19.1.0)
-Styling: Tailwind CSS 4.x, Radix UI Themes
-Icons: Lucide React, React Icons
-State Management: React Context API
-
-Backend
-
-Runtime: Node.js
-API Routes: Next.js API Routes
-Database: MongoDB
-ORM: Prisma 6.12.0
-Authentication: NextAuth.js v5 (beta)
-JWT: jsonwebtoken 9.0.2
-
-DevOps
-
-Package Manager: npm
-TypeScript: 5.8.3
-Build Tool: Next.js built-in (Turbopack)
-
-
-Architecture
-Directory Structure
-src/
-├── app/
-│   ├── (group)/              # Grouped routes with shared layout
-│   │   ├── Header/           # Navigation component
-│   │   ├── cart/             # Shopping cart
-│   │   ├── product/[id]/     # Product details
-│   │   ├── search/           # Search results
-│   │   ├── context/          # React Context providers
-│   │   └── ...
-│   ├── api/                  # Backend API routes
-│   │   ├── auth/
-│   │   ├── cart/
-│   │   ├── products/
-│   │   └── ...
-│   ├── login/
-│   ├── signup/
-│   └── globals.css
-├── components/               # Reusable UI components
-├── services/                 # Backend utilities
-│   ├── prisma.ts
-│   ├── jwt.ts
-│   └── helper.ts
-├── constants/                # Static data (categories, payment methods)
-└── generated/prisma/         # Generated Prisma client
-
-prisma/
-└── schema.prisma             # Database schema
-
-auth.ts                       # NextAuth configuration
-middleware.ts                 # NextAuth middleware
-
-Features
-1. User Management
-
-Dual Authentication: Google OAuth + Email/Password
-Role-based Access: Personal vs Business users
-Session Management: JWT-based with HTTP-only cookies
-
-2. Product Catalog
-
-Dynamic product listings with pagination (15 items/page)
-Category-based filtering (10+ categories)
-Price range filtering
-Full-text search
-Similar product recommendations
-
-3. Shopping Cart
-
-Guest cart (localStorage) → DB sync on login
-Real-time quantity updates
-"Save for Later" functionality
-Persistent across sessions
-
-4. Business Features
-
-Company registration with verification
-Product creation/editing
-Sales dashboard (/all-sales-product)
-Product management (CRUD operations)
-
-5. Checkout Flow
-Cart → Address & Contact → Payment Method → Order Confirmation
-
-Address validation
-Multiple payment options (Razorpay, UPI, COD, Net Banking, EMI)
-Promo code support (SAVE10, FIRST50)
-
-6. UI/UX
-
-Responsive design (mobile-first)
-Loading states with skeleton screens
-Animated transitions (fade-in, hover effects)
-Advertisement carousel (auto-rotating every 3s)
-Toast notifications
-
-
-Database Schema
-Prisma Models
-User
-prismamodel user {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  email    String   @unique
-  password String?
-  username String?
-  usecase  String?  // "personal" | "business"
-  provider String   // "google" | "credentials"
-  
-  cart     cart[]
-  cartdata cartdata[]
-  company  company[]
-  save     save[]
-}
-Product
-prismamodel Product {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  title       String
-  description String
-  price       Float
-  thumbnail   String?
-  category    String
-  companyId   String?   @db.ObjectId
-  
-  company     company?  @relation(fields: [companyId], references: [id])
-  cart        cart[]
-  cartItems   cartdata[]
-  save        save[]
-}
-Company
-prismamodel company {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  name        String?
-  ownerId     String   @db.ObjectId
-  category    String?
-  description String?
-  
-  owner       user     @relation(fields: [ownerId], references: [id])
-  Products    Product[]
-}
-Cart (Guest cart - temporary)
-prismamodel cart {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String  @db.ObjectId
-  productId String  @db.ObjectId
-  quantity  Int     @default(1)
-  
-  user      user    @relation(fields: [userId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
-}
-CartData (Persistent cart for logged-in users)
-prismamodel cartdata {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String  @db.ObjectId
-  productId String  @db.ObjectId
-  quantity  Int     @default(1)
-  
-  user      user    @relation(fields: [userId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
-}
-Save (Save for Later)
-prismamodel save {
-  id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId    String  @db.ObjectId
-  productId String  @db.ObjectId
-  
-  user      user    @relation(fields: [userId], references: [id])
-  product   Product @relation(fields: [productId], references: [id])
-}
-
-API Endpoints
-Authentication
-MethodEndpointDescriptionPOST/api/signupRegister new userPOST/api/loginAuthenticate userPOST/api/logoutClear sessionGET/POST/api/auth/[...nextauth]NextAuth handlers
-Products
-MethodEndpointDescriptionGET/api/productsList all productsGET/api/products/[id]Get product by IDPOST/api/productsCreate product (Business only)GET/api/search?q=&min=&max=Search productsGET/api/selectproducts?category=&min=&max=Filter by categoryGET/api/similarproducts?category=&id=Related products
-Cart
-MethodEndpointDescriptionGET/api/cartGet user's cartPOST/api/cartAdd to cartPUT/api/cart/updateUpdate quantityDELETE/api/cart/deleteRemove itemPOST/api/cart/mergeMerge guest cart on loginPOST/api/cart/savelaterMove to save-for-later
-Save for Later
-MethodEndpointDescriptionGET/api/savelaterGet saved itemsPOST/api/savelaterSave itemPOST/api/savelater/movetocartMove back to cartPOST/api/savelater/mergeMerge guest saves
-Company
-MethodEndpointDescriptionPOST/api/addcompanyRegister companyGET/api/allsalesproductList company products
-Product Management
-MethodEndpointDescriptionGET/api/edit-product/[id]Get product for editingPOST/api/edit-product/[id]Update product
-
-Authentication & Authorization
-NextAuth Configuration (auth.ts)
-typescriptimport NextAuth from "next-auth"
-import Google from "next-auth/providers/google"
-
-export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [Google],
-})
-JWT Helper (services/jwt.ts)
-typescriptexport function generateToken(data) {
-  return jwt.sign(data, process.env.JWT_SECRET)
-}
-
-export function verifyToken(token) {
-  return jwt.verify(token, process.env.JWT_SECRET)
-}
-User Retrieval (services/helper.ts)
-typescriptexport default async function getCurrentUserFromCookies() {
-  // 1. Check NextAuth session (Google OAuth)
-  const session = await auth()
-  if (session) {
-    return await prismaClient.user.findUnique({
-      where: { email: session.user?.email },
-      include: { company: true } // Include for business users
-    })
-  }
-
-  // 2. Check JWT cookie (Credentials)
-  const token = cookies().get('user')?.value
-  const decoded = verifyToken(token)
-  return await prismaClient.user.findUnique({
-    where: { email: decoded?.email },
-    include: { company: true }
-  })
-}
-
-State Management
-React Context API
-CartContext (context/CartContext.tsx)
-Manages shopping cart state:
-typescriptconst CartContext = createContext()
-
-export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState([])
-  const [user, setUser] = useState(null)
-  
-  // Load cart from localStorage (guests) or API (logged-in)
-  useEffect(() => {
-    if (!user) {
-      setCart(JSON.parse(localStorage.getItem('cart') || '[]'))
-    } else {
-      fetch('/api/cart').then(res => res.json())
-        .then(data => setCart(data.items))
-    }
-  }, [user])
-  
-  // Sync to localStorage for guests
-  useEffect(() => {
-    if (!user) {
-      localStorage.setItem('cart', JSON.stringify(cart))
-    }
-  }, [cart, user])
-  
-  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0)
-  
-  return (
-    <CartContext.Provider value={{ cart, setCart, totalItems, user }}>
-      {children}
-    </CartContext.Provider>
-  )
-}
-SaveContext (context/savecontext.tsx)
-Manages "Save for Later" items with similar logic to CartContext.
-
-Component Structure
-Key Components
-Header (Header/page.tsx)
-
-Search bar with autocomplete
-Cart icon with item count badge
-Login/Logout button
-Conditional "Add Product" button (business users)
-
-Itemcard (components/productcard.tsx)
-Reusable product card with:
-
-Product image, title, price
-Rating display
-"Add to Cart" & "Save for Later" buttons
-Hover effects and animations
-
-AddToCart (components/addtocartbtn.tsx)
-typescriptconst AddToCart = ({ product }) => {
-  const { cart, setCart, user } = useContext(CartContext)
-  
-  async function handlecart() {
-    if (user) {
-      await fetch('/api/cart', {
-        method: 'POST',
-        body: JSON.stringify({ userId: user.id, productId: product.id, quantity: 1 })
-      })
-    }
-    // Update local state
-    setCart([...cart, { ...product, quantity: 1 }])
-  }
-  
-  return <button onClick={handlecart}>Add to Cart</button>
-}
-Pagination (components/pagination.tsx)
-
-Client-side pagination (15 items/page)
-Dynamic page range calculation
-Prev/Next navigation
-
-CategoryNavbar (components/select-by-category.tsx)
-
-Horizontal scrollable category list
-10 predefined categories with icons
-Gradient hover effects
-
-
-Setup & Installation
-Prerequisites
-
-Node.js 18.18+ / 20.3+ / 21+
-MongoDB Atlas account (or local MongoDB)
-Google OAuth credentials
-
-Steps
-
-Clone Repository
-
-bash   git clone <repository-url>
-   cd ecommerce
-
-Install Dependencies
-
-bash   npm install
-
-Configure Environment Variables
-Create .env file:
-
-env   DATABASE_URL="mongodb+srv://username:password@cluster.mongodb.net/dbname"
-   JWT_SECRET="your-secret-key"
-   AUTH_SECRET="your-auth-secret"
-   AUTH_GOOGLE_ID="google-client-id"
-   AUTH_GOOGLE_SECRET="google-client-secret"
-   NEXT_PUBLIC_BASE_URL="http://localhost:3000"
-
-Generate Prisma Client
-
-bash   npm run generate
-   # or
-   npx prisma generate
-
-Run Development Server
-
-bash   npm run dev
-   # Runs on http://localhost:3000
-
-Build for Production
-
-bash   npm run build
-   npm start
-
-Environment Variables
-VariableDescriptionExampleDATABASE_URLMongoDB connection stringmongodb+srv://...JWT_SECRETSecret for JWT signingmySecretKey123AUTH_SECRETNextAuth secretopenssl rand -base64 32AUTH_GOOGLE_IDGoogle OAuth Client IDFrom Google Cloud ConsoleAUTH_GOOGLE_SECRETGoogle OAuth SecretFrom Google Cloud ConsoleNEXT_PUBLIC_BASE_URLApp base URLhttp://localhost:3000
-
-Deployment
-Vercel (Recommended)
-
-Push to GitHub
-
-bash   git init
-   git add .
-   git commit -m "Initial commit"
-   git remote add origin <your-repo-url>
-   git push -u origin main
-```
-
-2. **Deploy on Vercel**
-   - Import project from GitHub
-   - Add environment variables in Settings
-   - Deploy automatically
-
-3. **Configure Domain**
-   - Add custom domain in Vercel dashboard
-   - Update `NEXT_PUBLIC_BASE_URL`
-
-### Alternative Platforms
-- **Railway**: Connect GitHub, add env vars, deploy
-- **DigitalOcean App Platform**: Similar to Vercel
-- **AWS Amplify**: For AWS ecosystem
+A full-stack e-commerce platform built with Next.js 15 that supports dual user types: **Personal Users** (shoppers) and **Business Users** (sellers). The platform enables seamless shopping experiences with features like cart management, product listing, authentication, and payment processing.
 
 ---
 
-## Key Features Implementation
+## Technology Stack
 
-### 1. Cart Synchronization Flow
+### Frontend
+- **Framework**: Next.js 15.4.1 with App Router
+- **React**: 19.1.0
+- **Styling**: Tailwind CSS 4.x
+- **UI Components**: Radix UI Themes
+- **Icons**: Lucide React, React Icons
+- **State Management**: React Context API
+
+### Backend
+- **Runtime**: Node.js
+- **API**: Next.js API Routes (Server Actions)
+- **Database**: MongoDB (Cloud-based)
+- **ORM**: Prisma 6.12.0
+- **Authentication**: NextAuth.js v5 (beta) + Custom JWT
+- **JWT Handling**: jsonwebtoken 9.0.2
+
+### DevOps & Tools
+- **Package Manager**: npm
+- **TypeScript**: 5.8.3
+- **Build Tool**: Next.js built-in (Turbopack support)
+
+---
+
+## Core Features
+
+### 1. User Management
+- **Dual Authentication System**:
+  - Google OAuth (via NextAuth.js)
+  - Email/Password (Custom JWT-based)
+- **User Roles**:
+  - Personal Users: Browse and purchase products
+  - Business Users: List products, manage company, view sales
+- **Session Management**: HTTP-only cookies with JWT tokens
+
+### 2. Product Management
+- Dynamic product catalog with pagination (15 items/page)
+- 10+ category-based filtering with custom icons
+- Price range filtering
+- Full-text search functionality
+- Similar product recommendations based on category
+- Business users can CRUD their products
+
+### 3. Shopping Cart System
+- **Guest Cart**: Stored in localStorage
+- **Authenticated Cart**: Persisted in database
+- **Automatic Sync**: Guest cart merges into DB upon login
+- Real-time quantity updates
+- Cart item count badge in header
+
+### 4. Save for Later
+- Move items from cart to save-for-later list
+- Move saved items back to cart
+- Persists across sessions for logged-in users
+- localStorage for guests
+
+### 5. Business Features
+- Company registration with verification
+- Product creation and editing
+- Sales dashboard (`/all-sales-product`)
+- Products linked to company ownership
+
+### 6. Checkout Flow
 ```
-Guest → Add to Cart → localStorage
-       ↓ (User logs in)
+Cart → Address & Contact → Payment Method → Order Confirmation
+```
+- Address validation with required fields
+- Multiple payment options (Razorpay, UPI, COD, Net Banking, EMI)
+- Promo code support (SAVE10, FIRST50)
+- Order summary with tax calculation (18% GST)
+
+### 7. Search & Discovery
+- Global search bar with autocomplete
+- Category-based filtering (horizontal scroll navbar)
+- Price range filters
+- Product detail pages with similar products
+
+---
+
+## Architecture Patterns
+
+### 1. File-Based Routing
+```
+src/app/
+├── (group)/          # Grouped routes with shared layout
+│   ├── Header/       # Shared navigation
+│   ├── cart/
+│   ├── product/[id]/
+│   ├── search/
+│   └── context/      # React Context providers
+├── api/              # Backend API routes
+│   ├── auth/
+│   ├── cart/
+│   ├── products/
+│   └── ...
+├── login/
+└── signup/
+```
+
+### 2. State Management Strategy
+- **Global State**: React Context API
+  - `CartContext`: Manages shopping cart and user data
+  - `SaveContext`: Manages save-for-later items
+- **Local State**: React useState for component-level state
+- **Server State**: Prisma ORM for database queries
+
+### 3. Authentication Flow
+```mermaid
+graph TD
+    A[User Login] --> B{Auth Method?}
+    B -->|Google| C[NextAuth Session]
+    B -->|Email/Pass| D[JWT Token]
+    C --> E[Store in NextAuth Session]
+    D --> F[Store in HTTP-only Cookie]
+    E --> G[Access User Data]
+    F --> G
+```
+
+### 4. Cart Synchronization
+```
+Guest User → Add to Cart → localStorage
+     ↓ (User logs in)
 Merge localStorage cart → Database (POST /api/cart/merge)
-       ↓
+     ↓
 Clear localStorage → Fetch from DB
-2. Search Functionality
+```
 
-Full-text search on product title
-Case-insensitive matching
-Combined with price range filters
+---
 
-typescript// api/search/route.ts
-const products = await prismaClient.product.findMany({
-  where: {
-    title: { contains: query, mode: 'insensitive' },
-    price: { gte: min, lte: max }
-  }
-})
-3. Category Filtering
+## Database Design Principles
 
-10 predefined categories with Lucide icons
-Gradient color schemes per category
-Smooth horizontal scrolling
+### Key Entities
+1. **User**: Stores user credentials, preferences, and authentication data
+2. **Product**: Product catalog with pricing, descriptions, images
+3. **Company**: Business entity linked to product owners
+4. **Cart Models**:
+   - `cart`: Temporary guest cart storage
+   - `cartdata`: Persistent authenticated user cart
+5. **Save**: Save-for-later items
 
-4. Payment Integration
+### Relationships
+- User → Company (One-to-Many)
+- Company → Products (One-to-Many)
+- User → Cart Items (One-to-Many)
+- User → Saved Items (One-to-Many)
 
-Razorpay (primary): UPI, Cards, Wallets
-Cash on Delivery: +₹40 charge
-Promo Codes: SAVE10 (10% off), FIRST50 (₹50 off)
+### Data Flow
+- Products created by business users link to their company via `companyId`
+- Cart items reference both user and product
+- All IDs use MongoDB ObjectId format
 
+---
 
-Security Considerations
+## API Architecture
 
-HTTP-Only Cookies: JWT stored in secure cookies
-Environment Secrets: All sensitive data in .env
-Input Validation: Server-side validation on all API routes
-CSRF Protection: NextAuth built-in protection
-SQL Injection: Prevented by Prisma ORM
+### RESTful Endpoints
 
+#### Authentication
+- `POST /api/signup` - Register new user
+- `POST /api/login` - Authenticate user
+- `POST /api/logout` - Clear session
+- `GET/POST /api/auth/[...nextauth]` - NextAuth handlers
 
-Performance Optimizations
+#### Products
+- `GET /api/products` - List all products
+- `GET /api/products/[id]` - Get single product
+- `POST /api/products` - Create product (Business only)
+- `POST /api/edit-product/[id]` - Update product
+- `GET /api/search` - Search with filters
+- `GET /api/selectproducts` - Filter by category
+- `GET /api/similarproducts` - Get related products
 
-Server Components: Default in Next.js 15 App Router
-Image Optimization: Next.js <Image> component
-Code Splitting: Automatic route-based splitting
-Caching: Browser caching for static assets
-Pagination: Reduces initial data load
+#### Cart
+- `GET /api/cart` - Get user's cart
+- `POST /api/cart` - Add to cart
+- `PUT /api/cart/update` - Update quantity
+- `DELETE /api/cart/delete` - Remove item
+- `POST /api/cart/merge` - Merge guest cart on login
+- `POST /api/cart/savelater` - Move to save-for-later
 
+#### Company
+- `POST /api/addcompany` - Register company
+- `GET /api/allsalesproduct` - List company products
 
-Future Enhancements
+---
 
- Order history and tracking
- Product reviews and ratings
- Wishlist functionality
- Advanced analytics dashboard for businesses
- Email notifications
- Multi-language support
- Dark mode
- PWA support
- Real-time inventory management
+## Security Implementation
 
+### 1. Authentication Security
+- HTTP-only cookies for JWT storage
+- Secure session management with NextAuth
+- Environment-based secret keys
 
-Troubleshooting
-Common Issues
+### 2. Authorization
+- Role-based access control (Personal vs Business)
+- Company ownership verification for product edits
+- User-specific cart and saved items
 
-Prisma Client Not Found
+### 3. Input Validation
+- Server-side validation on all API routes
+- Type checking with TypeScript
+- Prisma ORM prevents SQL injection
 
-bash   npm run generate
+### 4. Environment Variables
+```env
+DATABASE_URL          # MongoDB connection string
+JWT_SECRET           # JWT signing key
+AUTH_SECRET          # NextAuth secret
+AUTH_GOOGLE_ID       # Google OAuth Client ID
+AUTH_GOOGLE_SECRET   # Google OAuth Secret
+NEXT_PUBLIC_BASE_URL # App base URL
+```
 
-MongoDB Connection Error
+---
 
-Check DATABASE_URL format
-Whitelist IP in MongoDB Atlas
+## Performance Optimizations
 
+1. **Server Components**: Default in Next.js 15 App Router
+2. **Image Optimization**: Next.js `<Image>` component with remote patterns
+3. **Code Splitting**: Automatic route-based splitting
+4. **Caching**: Browser caching for static assets
+5. **Pagination**: Reduces initial data load to 15 items per page
+6. **Client-Side Routing**: Next.js Link for instant navigation
 
-NextAuth Callback Error
+---
 
-Verify AUTH_SECRET is set
-Check Google OAuth redirect URIs
+## User Experience Features
 
+### 1. Responsive Design
+- Mobile-first approach
+- Tailwind CSS breakpoints (sm, md, lg, xl)
+- Horizontal scrolling category navbar on mobile
 
-Build Errors
+### 2. Loading States
+- Skeleton screens during data fetch
+- Loading spinners for async operations
+- Optimistic UI updates
 
-bash   rm -rf .next
-   npm run build
+### 3. Interactive Elements
+- Hover effects with Lucide icons
+- Animated transitions (fade-in, scale)
+- Toast notifications (via alerts)
+- Advertisement carousel (auto-rotate every 3s)
 
-Contributing
+### 4. Accessibility
+- Semantic HTML structure
+- ARIA labels where appropriate
+- Keyboard navigation support
 
-Fork the repository
-Create feature branch (git checkout -b feature/AmazingFeature)
-Commit changes (git commit -m 'Add AmazingFeature')
-Push to branch (git push origin feature/AmazingFeature)
-Open Pull Request
+---
 
+## Deployment Considerations
 
-License
-This project is proprietary. All rights reserved.
+### Recommended Platform: Vercel
+1. Push to GitHub repository
+2. Import project in Vercel
+3. Add environment variables in settings
+4. Automatic deployments on push
 
-Contact & Support
+### Environment Setup
+- Node.js 18.18+ required
+- MongoDB Atlas account needed
+- Google OAuth credentials from Google Cloud Console
 
-Email: shopzone@gmail.com
-GitHub Issues: Project Issues
-Documentation: This README
+### Build Process
+```bash
+npm run generate  # Generate Prisma client
+npm run build     # Build Next.js app
+npm start         # Production server
+```
+
+---
+
+## Future Enhancements Roadmap
+
+- [ ] Order history and tracking
+- [ ] Product reviews and ratings
+- [ ] Wishlist functionality
+- [ ] Advanced analytics dashboard for businesses
+- [ ] Email notifications
+- [ ] Multi-language support
+- [ ] Dark mode
+- [ ] PWA support
+- [ ] Real-time inventory management
+- [ ] Actual Razorpay payment integration
+
+---
+
+## Project Structure Summary
+
+```
+/
+├── src/
+│   ├── app/              # Next.js 15 App Router
+│   ├── components/       # Reusable UI components
+│   ├── services/         # Backend utilities
+│   └── constants/        # Static data
+├── prisma/              # Database schema
+├── public/              # Static assets
+├── auth.ts              # NextAuth config
+└── middleware.ts        # NextAuth middleware
+```
+
+---
+
+## Key Differentiators
+
+1. **Dual User System**: Unique separation of personal and business users
+2. **Smart Cart Sync**: Seamless guest-to-authenticated cart migration
+3. **Save for Later**: Enhanced shopping flexibility
+4. **Company Management**: Business users manage their own product catalog
+5. **Category Navigation**: Visually appealing horizontal scroll with gradients
+
+---
+
+## Development Guidelines
+
+### Code Style
+- TypeScript with strict mode
+- Functional components with hooks
+- Server components by default (Next.js 15)
+- Client components only when needed (use "use client")
+
+### File Naming
+- kebab-case for files: `add-company-btn.tsx`
+- PascalCase for components: `AddCompanyBtn`
+- Route folders: lowercase with hyphens

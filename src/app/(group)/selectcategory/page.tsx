@@ -38,7 +38,7 @@ export default function SelectCategory() {
     }
 
     fetchProducts();
-  }, [category]);
+  }, [category,minprice,maxprice]);
 
   if (loading) {
     return (

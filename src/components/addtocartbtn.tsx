@@ -43,9 +43,9 @@ const AddToCart = ({ product }) => {
       console.log(data.data);
       if (data.success) {
         setCart([...cart, data.data]);
-        alert("product added successfully in cart");
+
       } else {
-        alert("porduct not add in cart due to some error");
+       
       }
     }
 

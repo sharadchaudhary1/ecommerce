@@ -19,7 +19,7 @@ export default function RemoveProduct({ id }) {
       });
       const data = await res.json();
       if(data.success){
-        alert("product deleted successfully")
+        
       }
 
      

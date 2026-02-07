@@ -21,8 +21,9 @@ export default function Logout(){
             })
             const data=await res.json()
             if(data.success){
-          alert("user logged out successfully")
-            }
+        //   alert("user logged out successfully")
+             router.push('/')
+    }
         }
     }
 

@@ -79,7 +79,7 @@ export default function Layout({ children }) {
               </div>
 
               {/* Rating */}
-              <div className="flex flex-col">
+              {/* <div className="flex flex-col">
                 <label
                   htmlFor="rating"
                   className="text-sm font-semibold text-gray-700 mb-1"
@@ -97,7 +97,7 @@ export default function Layout({ children }) {
                   <option value="3">⭐ 3 & above</option>
                   <option value="4">⭐ 4 & above</option>
                 </select>
-              </div>
+              </div> */}
 
               <button
                 onClick={handlefilter}

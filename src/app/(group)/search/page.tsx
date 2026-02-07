@@ -11,7 +11,7 @@ const Search = async ({ searchParams }) => {
   const min = searchParams.min || 0;
   const max = searchParams.max || 999999999;
 
-  const url = `/api/search?q=${search}&min=${min}&max=${max}`;
+  const url = `${process.env.NEXT_PUBLIC_BASE_URL}/api/search?q=${search}&min=${min}&max=${max}`;
   const response = await fetch(url);
   const data = await response.json();
   const products = data.data || [];

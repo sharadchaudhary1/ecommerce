@@ -19,7 +19,7 @@ const Header = () => {
  const{user}=useContext(CartContext)
  const router=useRouter()
 
-
+console.log(user)
 
   useEffect(() => {
     const fetchdata = async () => {
